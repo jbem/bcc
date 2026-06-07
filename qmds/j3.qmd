@@ -1,0 +1,33 @@
+---
+title: "Jour 3"
+subtitle: " R - Python - SQL "
+author: "Justin Bem"
+date: today
+date-format: "DD MMMM YYYY"
+lang: fr
+
+#--------PARAMETRE DU J3----------
+params:
+  scenario: "baseline"
+  horizon: 3
+  segment: "corporate"
+---
+
+```{r}
+
+#-----REPRISE DES PARAMETRES------
+scenario <-params$scenario
+horizon  <-params$horizon
+segment  <-params$segment 
+```
+
+```{python}
+#| label: setup-python
+#| include: false
+
+
+scenario = r.scenario
+horizon  = int(r.horizon)
+segment  = r.segment
+
+```

@@ -1,0 +1,17 @@
+---
+title: "Jour 5"
+subtitle: " R - Python - SQL "
+author: "Justin Bem"
+date: today
+date-format: "DD MMMM YYYY"
+lang: fr
+nocite: |
+  @*
+
+---    
+
+# Références
+## Références
+
+::: {#refs}
+:::

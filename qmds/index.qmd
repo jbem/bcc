@@ -1,0 +1,66 @@
+---
+title: "Formation en Data Science et Stress test pour la BCC"
+subtitle: "Introduction générale"
+author: "Justin Bem"
+date: today
+date-format: "DD MMMM YYYY"
+lang: fr
+
+
+---
+
+```{r}
+#| label: setup-r
+#| include: false
+
+palette_st <-c(
+  baseline = "#185FA5",
+  adverse  = "#EF9F27",
+  severe   = "#D85A30"
+)
+
+```
+
+## Introduction générale
+
+ @laffonttirole1993, affirmaient que la régulation faisait face à trois contraintes majeures, les contraintes informationnelles, Les contraintes transactionnelles et les contraintes politiques. 
+
+Beaucoup d'efforts ont été fait par les régulateurs et superviseurs pour réduire les contraintes informationnelles et les progrès en informatique y ont beaucoup contribué. Les données sont même devenues abondantes dans la quasi-totalité des secteurs d'actvité. Toutefois, comme l'a dit le mathématicien Clive Humby, **les données sont le noveau pétrole, mais l'analyse est le moteur**.  
+
+Dans ce contexte, la science des données (**Data Science**) offre un ensemble de méthodes statistiques, économétriques et d'apprentissage automatique permettant de valoriser les données disponibles afin d'améliorer les capacités d'analyse, de prévision et de gestion des risques. Les langages R et Python se sont imposés comme les standards internationaux pour le traitement des données, la modélisation statistique, la visualisation et le développement d'outils d'aide à la décision.
+
+## Objectifs de la formation
+
+Renforcer les compétences des participants en science des données à travers l'utilisation des langages R et Python pour l'analyse des données économiques et financières, la modélisation des risques et la réalisation d'exercices de stress tests destinés à soutenir les missions de supervision bancaire et de stabilité financière.
+
+De manière spécifique, il s'agira de :
+
+1. Manipuler et préparer des données financières, prudentielles et macroéconomiques à l'aide des langages R et Python.
+2. Réaliser des analyses exploratoires et produire des tableaux de bord et visualisations permettant de mieux comprendre les risques du système financier.
+3. Développer des modèles statistiques et économétriques destinés à la prévision et à l'analyse des risques.
+4. Concevoir des scénarios macroéconomiques cohérents à partir d'hypothèses de chocs économiques ou financiers.
+5. Mettre en œuvre des stress tests de solvabilité à l'aide de R et Python.
+
+##  🗓️ Programme de la semaine
+
+* **[Jour 1 :  Environnement de travail & fondamentaux du traitement des données](j1.qmd)**
+  * Installation, syntaxe de base R et Python, introduction à SQL, Quarto et Git
+* **[Jour 2 : Exploration des données et introductin à Shiny](j2.qmd)**
+  * Analyse exploratoire des données, représentations graphiques, Shiny.
+* **[Jour 3 : Scénarios macroéconomiques & modélisation des NPL](j3.qmd)**
+  * Introduction aux stress tests et à la modélisation. 
+* **[Jour 4 : Realisation d'un stress test de bout en bout](j4.qmd)**
+  * Mettre en oeuvre toutes les étapes d'un stress test de solvabilité
+* **[Jour 5 : Cas pratique](j5.qmd)**
+  * Traval en équipe, restitution.
+
+
+## 📚 Documentation recommandée
+
+Il existe une abondante litterature sur le sujet,il est particulierement recommandé 
+@r4ds et @ihaka996 
+
+## Références du chapitre
+
+::: {#refs}
+:::

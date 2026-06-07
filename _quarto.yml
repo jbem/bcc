@@ -1,0 +1,49 @@
+
+project: 
+  type: website
+  output-dir: _site
+
+website: 
+  title: "Formation en Data Science et Stress test pour la BCC"
+  navbar:
+    background: primary
+    search: false
+    left: 
+      - text: "Introduction générale"
+        href: qmds/index.qmd
+      - text: "Jour 1"
+        href: qmds/j1.qmd
+      - text: "Jour 2"
+        href: qmds/j2.qmd
+      - text: "Jour 3"
+        href: qmds/j3.qmd
+      - text: "Jour 4"
+        href: qmds/j4.qmd
+      - text: "Jour 5"
+        href: qmds/j5.qmd
+
+# ------SORTIE -------
+format:
+  revealjs:
+    theme: [default, dark]
+    slide-number: true
+    show-slide-number: all
+    preview-links: auto
+    transition: fade
+    chalkboard: true
+    multiplex: false
+    line-highlight-target: true
+    code-copy: true
+    code-line-numbers: true
+    scrollable: true
+    smaller: true
+
+
+# ----- Execution ------
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: false
+
+bibliography: ["references.bib"]

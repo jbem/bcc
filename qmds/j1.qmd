@@ -1,0 +1,14 @@
+---
+title: "Jour 1: Introduction et Environnement"
+subtitle: " R - Python - SQL "
+author: "Justin Bem"
+date: today
+date-format: "DD MMMM YYYY"
+lang: fr
+
+---
+
+
+
+
+
