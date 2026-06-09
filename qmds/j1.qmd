@@ -6,9 +6,342 @@ date: today
 date-format: "DD MMMM YYYY"
 lang: fr
 
+# ------SORTIE -------
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    show-slide-number: all
+    preview-links: auto
+    transition: fade
+    chalkboard: true
+    line-highlight-target: true
+    code-copy: true
+    code-line-numbers: false
+    code-overflow: scroll
+    scrollable: true
+    smaller: true
+    logo: ../logo.png
+    css: ../custom.css
+
+
 ---
 
+## Brève introduction à ![](../Rlogo.png){height="1.2em" style="vertical-align: middle;"} et ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+- Le langage R [@ihaka996 ] est une implémentation du langage **S**, développé par John Chambers. Ce langage a été primé par l'ACM avec cette ctation: 
+
+```{r}
+#| label: ACM
+#| echo: false
+#| include: true
+#| 
+fortunes::fortune("ACM")|>print()
+```
 
 
+- Le langage Python quant-à lui est apparu cinq ans plutôt en 1991, développé par **Guido van Rossum** aux Pays-Bas.Il est aujoud'hui le logiciel le plus utilisé pour l'IA. 
+
+- Ce deux logiciels, se distinguent par leur flexibilité et leur interactivité. En effet, les logiciels comme SAS et SPSS ont un modèle d'analyse différée. Avec ce modèle, soumet une tâche en fournissant des données et les instructions, le logiciel effectue les analyse et imprime les informations susceptibles d'interser l'utilisateur qui scrute ces resultats pour extraire ce qui l'interesse, et est limité aux processus proposés par le logiciel. 
+
+- De l'autre côté, des langages performants comme C++ ou Java ne sont pas interactifs, car doivent être compilés, ce qui n'en fait pas outils de premier choix pour l'analyse des données.  
+
+- Enfin, ces logiciels sont open-source, et donc sans un impact budgétaire considérable. 
+
+## Installation des outils 
+
+L'installation de R et Python se fait en général à partir des programme d'installation fournit par les sites oficiels des deux langages (www.r-project.org et www.phyton.org). Pour une utilisation lus efficace, il existe des outils plus performants notamment pour gestion des projets complexes (Rstudio, PyCharm, Positron, VS Code). Ces utils permettent de faire simulatenement les deux. Pour cette formation nous allns utiliser [Positron](https://positron.posit.co)  
+
+**La fin du copier-coller ?** Une autre force ces outils c'est de permettre la _recherche reproductible_. Traditionnellement, pour rediger un rapport d'analyse, on utilise un logicel de traitement de texte, on realise les calculs et les graphiquesailleurs et souventpar copier-coller,les resultats sont intégrés au rapport. Avec R et Python, il est assez aisé de générer des rapports dynamiques. C'est à ce stade qu'intervient [**Quarto**](https://quarto.org)  
+
+Les deux langages sont extnsibles avec une multitude de modules. Toutefois, les approches travail sont différentes. Avec R, vous chargez les modules donc vous avez besoin une fois qu'ils sont installés. C'est aussi le cas avec Python, mais avec option supplémentaires, **les environnements virtuels**. Un environnement est un espace de travail isolé qui contient sa propre installation de bibliothèque pour un projet donnée. Ils peuvent être crées avec un outil nommé **conda** ou l'outil par defaut **venv**. 
+
+Sous windows le code ci-après permet de créer et d'actver un environnement virtuel ;
+```{cmd}
+#| echo: true
+#| eval: false
+
+python -m venv nom_environnement
+nom_environnement\Scripts\activate
+
+```
+
+L'enviromment est alors créé dans le dossier où la commande création est appelée,et la seconde commande l'active. 
+
+## Premiers pas avec R et Python 
+
+<div><p style="font-size: 2em; color: blue;">Quelques commandes</p>
+::::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: Calc1
+
+2+3 # addition de deux nombres 
+sqrt(3/4)/(1/3-2/pi^2) #  racine carré et pi
+x<-c(12.1,9.6,13,19,20.5,14.3,8,9.4,6.2)
+m<-mean(x); v<-var(x)/length(x)
+m/sqrt(v)
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: Calc1P
+import math as mat
+print(2+3)  
+mat.sqrt(3/4)/(1/3-2/pow(mat.pi,2)) 
+
+import numpy as np
+x = np.array([12.1, 9.6, 13, 19, 20.5, 14.3, 8, 9.4, 6.2])
+m = np.mean(x)
+v = np.var(x, ddof=1) / len(x)  # ddof=1 pour reproduire var() de R
+resultat = m / np.sqrt(v)
+print(resultat)
+
+```
+
+:::
+
+::::
+</div>
+
+On s'aperçoit de l'utilisation dans Python de la commande **import** pour accéder à certains fonctions. En fait, Python est langage universel pas destiné intialement aux statistiques, contrairement à R qui a un noyau de base avec l'essentiel des fonctions statistiques de base.    
+
+Un autre élément important est l'opérateur **pipeline**. Cet operateur sert à traiter la composition des fonctions. Si on veut calculer 
+$$ g \circ f \circ h \circ t(x)=g(f(h(t(x))))$$, plusieurs instructions peuvent-être nécessaires, $$ v_1\leftarrow t(x), v_2\leftarrow h(v_1), v_3\leftarrow f(v_2), v_4\leftarrow f(v_3)$$ 
+
+Dans R, avec l'opérateur pipeline (**|>** package **base** ou **%>%** du package **magrittr**), $v_4 \leftarrow x |> t()|>h()|>f()|>g()$. Avec Python, dispose d'une fonction **.pipe()** que verrons.
+
+<div><p style="font-size: 2em; color: blue;">Stockage des données</p>
+
+:::{.columns}
+
+:::{.column width="50%"}
+###  ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: Calc3
+
+x<-19                   # une valeur numérique
+ville<-"Kinshasa"       # Du texte
+nbCplx<-2+3i            # Un nombre complexe
+
+xvec<-c(1,3,8,9)        # Un vecteur de taille 4
+xsec<-seq(from=1,to=20,by=0.5) #suite arithmétique
+wvec<-1+xsec/2          # wvec est aussi un vecteur
+yvec<-5+3*xsec+wvec*rnorm(xsec) # ajout d'un bruit
+
+(A<-matrix(c(1,2,3,4),nr=2)) # Une matrice
+
+df<-data.frame(x=xsec,y=yvec,w=wvec) # Le data.frame
+head(df)
+
+rm(xsec,yvec,wvec) #Suppression de variable
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: Calc3P
+
+import pandas as pd
+
+x = 19              # Une valeur numérique
+ville = "Kinshasa"  # Du texte
+nbCplx = 2 + 3j     # Un nombre complexe
+xvec = np.array([1, 3, 8, 9]) # Un vecteur de taille 4
+xsec = np.arange(1, 20.5, 0.5) # Suite arithmétique de 1 à 20 par pas de 0.5
+wvec = 1 + xsec / 2 # wvec est aussi un vecteur
+yvec = 5 + 3 * xsec + wvec * np.random.normal(size=len(xsec))# Ajout d'un bruit 
+A = np.array([[1, 3],[2, 4]]) # Une matrice 2x2
+print(A)
+
+df = pd.DataFrame({"x": xsec,"y": yvec,"w": wvec}) # Le DataFrame
+print(df.head())
+
+# Suppression des variables
+del xsec
+del yvec
+del wvec
+
+```
+
+:::
+
+::::
+
+</div>
+
+Comme on peut le voir, les syntaxes sont assez proches. Le concept de **data frame** est commun aux deux langages. C'est le tableau de données statistiques. Avec R,le package **dplyr** est fondamental pour la manipulation des data frame, comme l'est **panda** avec Python. 
 
 
+<div><p style="font-size: 2em; color: blue;">Les fonctions</p>
+:::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: Calc2
+
+std.dev<-function(x) sqrt(var(x))
+t.stat<-function(x,mu=0){
+    n<-length(x)
+    t<-sqrt(n)*(mean(x)-mu)/std.dev(x)
+    rval<-c("T-Stat"=t,"P-value"=2*(1-pt(abs(t),n-1)))
+    return(rval)
+}
+set.seed(123)
+z<-rnorm(300,1,2)
+t.stat(z);t.stat(z,1)
+
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: Calc2P
+
+from scipy.stats import t
+
+def std_dev(x):
+    return np.sqrt(np.var(x, ddof=1))  # même définition que R
+
+def t_stat(x, mu=0):
+    n = len(x)
+    t_value = np.sqrt(n) * (np.mean(x) - mu) / std_dev(x)
+    p_value = 2 * (1 - t.cdf(abs(t_value), df=n-1))
+    return {"T-Stat": float(t_value),"P-value": float(p_value)}
+
+# Génération d'un échantillon N(1, 2²)
+np.random.seed(123)
+z = np.random.normal(loc=1, scale=2, size=300)
+
+print(t_stat(z))
+print(t_stat(z, 1))
+
+```
+
+:::
+
+::::
+
+</div>
+
+Les fonctions sont fondamentales avec ces deux langages car permettent une très grande flexibilité. Avec R, Elles sont définies avec le mot clé **function** suivie de la liste des arguments et du corps de la fonction entre deux accolades. Avec Python, la fonction est définie avec **def**.
+
+Un autre aspect important est le calcul itératif. Nous allons illustrer avec le calcul d'une valeur approximative de $\pi$ par **Monte Carlo**. 
+
+<div style="display: flex; align-items: center;">
+
+::: {.r-fit-text}
+
+```{r}
+#| echo: false
+#| label: circle
+#| fig-align: center
+
+knitr::include_graphics("../Circle.png")
+
+```
+
+:::
+
+</div>
+
+Il est établit que $$\frac{\mbox{Aire}_{\mbox{cercle}}}{\mbox{Aire}_{\mbox{carré}}}=\frac{\pi}{4} $$
+
+Pour estimer $\pi$ on simule $N$ points du carré, et fait le rapport en le nombre de points tirés, et le nombre dans le cercle.  
+
+<div><p style="font-size: 2em; color: blue;">Calcul itératif </p>
+
+:::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: Calc4
+
+
+GetPI<-function(N,R=1){
+
+    npi<-0
+    for(i in 1:N){
+        x<-runif(1,-R,R)
+        y<-runif(1,-R,R)
+        if(x^2+y^2<=R^2){
+            npi<-npi+1
+        }
+    }
+    return(4*npi/N)
+}
+
+n<-c(10,100,1000,10000,100000,1000000)
+est<-rep(0,6)
+for(i in seq_along(n)) est[i]<-GetPI(n[i])
+
+df<-data.frame(n,est)
+head(df)
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: Calc4P
+
+def get_pi(N, R=1):
+    npi = 0
+    for i in range(N):
+        x = np.random.uniform(-R, R)
+        y = np.random.uniform(-R, R)
+        if x**2 + y**2 <= R**2:
+            npi += 1
+    return 4 * npi / N
+
+n = [10, 100, 1000, 10000, 100000, 1000000]
+est = np.zeros(len(n))
+
+for i in range(len(n)):
+    est[i] = get_pi(n[i])
+df = pd.DataFrame({"n": n,"est": est})
+print(df)
+
+```
+
+:::
+
+::::
+
+</div>
+
+## Références du chapitre
+
+::: {#refs}
+:::

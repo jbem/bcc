@@ -6,6 +6,26 @@ date: today
 date-format: "DD MMMM YYYY"
 lang: fr
 
+# ------SORTIE -------
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    show-slide-number: all
+    preview-links: auto
+    transition: fade
+    chalkboard: true
+    multiplex: false
+    line-highlight-target: true
+    code-copy: true
+    code-line-numbers: false
+    code-overflow: scroll
+    scrollable: true
+    smaller: true
+    logo: ../logo.png
+    css: ../custom.css
+    embed-resources: false
+
 #--------PARAMETRE DU J3----------
 params:
   scenario: "baseline"

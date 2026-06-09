@@ -6,6 +6,25 @@ date: today
 date-format: "DD MMMM YYYY"
 lang: fr
 
+# ------SORTIE -------
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    show-slide-number: all
+    preview-links: auto
+    transition: fade
+    chalkboard: true
+    multiplex: false
+    line-highlight-target: true
+    code-copy: true
+    code-line-numbers: false
+    code-overflow: scroll
+    scrollable: true
+    smaller: true
+    logo: ../logo.png
+    css: ../custom.css
+    embed-resources: false
 
 ---
 
@@ -18,6 +37,7 @@ palette_st <-c(
   adverse  = "#EF9F27",
   severe   = "#D85A30"
 )
+reticulate::use_virtualenv("~/.radian")
 
 ```
 
@@ -58,7 +78,7 @@ De manière spécifique, il s'agira de :
 ## 📚 Documentation recommandée
 
 Il existe une abondante litterature sur le sujet,il est particulierement recommandé 
-@r4ds et @ihaka996 
+@r4ds 
 
 ## Références du chapitre
 

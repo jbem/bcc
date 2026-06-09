@@ -1,0 +1,39 @@
+/* Force l'affichage et l'activité de la barre de défilement horizontale */
+.reveal pre {
+  overflow-x: auto !important; /* Force le scroll horizontal */
+  overflow-y: hidden !important;
+  pointer-events: auto !important; /* Réactive les clics et le glisser sur le bloc de code */
+}
+
+.reveal pre code {
+  white-space: pre !important; /* Empêche le retour à la ligne automatique */
+  overflow-x: auto !important;
+  word-wrap: normal !important;
+  pointer-events: auto !important;
+}
+
+/* Personnalisation de la barre de défilement pour la rendre plus visible et interactive */
+.reveal pre::-webkit-scrollbar {
+  height: 12px !important; /* Hauteur de la barre horizontale */
+  display: block !important;
+}
+
+.reveal pre::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 6px;
+}
+
+.reveal pre::-webkit-scrollbar-thumb {
+  background-color: #11caa0 !important; /* Couleur verte de votre charte graphique */
+  border-radius: 6px;
+  border: 2px solid #1a1a1a;
+}
+
+.reveal pre::-webkit-scrollbar-thumb:hover {
+  background-color: #1cdcb1 !important; /* Éclaircissement au survol */
+}
+
+.r-fit-text img {
+  display: block;
+  margin: 0 auto;
+}

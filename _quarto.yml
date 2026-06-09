@@ -22,23 +22,8 @@ website:
       - text: "Jour 5"
         href: qmds/j5.qmd
 
-# ------SORTIE -------
-format:
-  revealjs:
-    theme: [default, dark]
-    slide-number: true
-    show-slide-number: all
-    preview-links: auto
-    transition: fade
-    chalkboard: true
-    multiplex: false
-    line-highlight-target: true
-    code-copy: true
-    code-line-numbers: true
-    scrollable: true
-    smaller: true
 
-
+   
 # ----- Execution ------
 execute:
   echo: true
