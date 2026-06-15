@@ -1,6 +1,7 @@
 #---------PACKAGES ---------
 library(tidyverse)
 library(openxlsx2)
+library(rmarkdown)
 library(DBI)
 library(ROracle)
 library(RPostgres)
@@ -13,6 +14,7 @@ library(vars)
 library(broom)
 library(reactable)
 library(quarto)
+library(magrittr)
 
 #-----RETICULATE --------
 use_virtualenv("~/.radian")

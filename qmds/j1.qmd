@@ -50,21 +50,22 @@ fortunes::fortune("ACM")|>print()
 
 ## Installation des outils 
 
-L'installation de R et Python se fait en général à partir des programme d'installation fournit par les sites oficiels des deux langages (www.r-project.org et www.phyton.org). Pour une utilisation lus efficace, il existe des outils plus performants notamment pour gestion des projets complexes (Rstudio, PyCharm, Positron, VS Code). Ces utils permettent de faire simulatenement les deux. Pour cette formation nous allns utiliser [Positron](https://positron.posit.co)  
+L'installation de R et Python se fait en général à partir des programme d'installation fournit par les sites oficiels des deux langages (www.r-project.org et www.phyton.org). Pour une utilisation lus efficace, il existe des outils plus performants notamment pour gestion des projets complexes (Rstudio, PyCharm, Positron, VS Code). Ces utils permettent de faire simulatenement les deux. Pour cette formation nous allons utiliser [Positron](https://positron.posit.co)  
 
 **La fin du copier-coller ?** Une autre force ces outils c'est de permettre la _recherche reproductible_. Traditionnellement, pour rediger un rapport d'analyse, on utilise un logicel de traitement de texte, on realise les calculs et les graphiquesailleurs et souventpar copier-coller,les resultats sont intégrés au rapport. Avec R et Python, il est assez aisé de générer des rapports dynamiques. C'est à ce stade qu'intervient [**Quarto**](https://quarto.org)  
 
 Les deux langages sont extnsibles avec une multitude de modules. Toutefois, les approches travail sont différentes. Avec R, vous chargez les modules donc vous avez besoin une fois qu'ils sont installés. C'est aussi le cas avec Python, mais avec option supplémentaires, **les environnements virtuels**. Un environnement est un espace de travail isolé qui contient sa propre installation de bibliothèque pour un projet donnée. Ils peuvent être crées avec un outil nommé **conda** ou l'outil par defaut **venv**. 
 
 Sous windows le code ci-après permet de créer et d'actver un environnement virtuel ;
-```{cmd}
-#| echo: true
+
+
+```bash
 #| eval: false
 
 python -m venv nom_environnement
 nom_environnement\Scripts\activate
-
 ```
+
 
 L'enviromment est alors créé dans le dossier où la commande création est appelée,et la seconde commande l'active. 
 
@@ -113,14 +114,14 @@ print(resultat)
 ::::
 </div>
 
-On s'aperçoit de l'utilisation dans Python de la commande **import** pour accéder à certains fonctions. En fait, Python est langage universel pas destiné intialement aux statistiques, contrairement à R qui a un noyau de base avec l'essentiel des fonctions statistiques de base.    
+On s'aperçoit de l'utilisation dans Python de la commande **import** pour accéder à certains fonctions. En fait, Python est langage universel pas destiné intialement aux statistiques, contrairement à R qui a un noyau de base avec l'essentiel des fonctions statistiques de base. En général les entreprises modélisent avec R, MATLAB, SAS, STATA, SPSS et développent les outils de mise en production avec C/C++, Java... Python règle le problème du double outillage permettant en même temps la modélisation et la mise en production.
 
 Un autre élément important est l'opérateur **pipeline**. Cet operateur sert à traiter la composition des fonctions. Si on veut calculer 
-$$ g \circ f \circ h \circ t(x)=g(f(h(t(x))))$$, plusieurs instructions peuvent-être nécessaires, $$ v_1\leftarrow t(x), v_2\leftarrow h(v_1), v_3\leftarrow f(v_2), v_4\leftarrow f(v_3)$$ 
+$g \circ f \circ h \circ t(x)=g(f(h(t(x))))$, on court le risque d'ajouter ou omettre des parenthèses, et si les fonctions de la composition sont complexes, plusieurs instructions peuvent-être nécessaires, $$ v_1\leftarrow t(x), v_2\leftarrow h(v_1), v_3\leftarrow f(v_2), v_4\leftarrow f(v_3)$$ 
 
-Dans R, avec l'opérateur pipeline (**|>** package **base** ou **%>%** du package **magrittr**), $v_4 \leftarrow x |> t()|>h()|>f()|>g()$. Avec Python, dispose d'une fonction **.pipe()** que verrons.
+Dans R, avec l'opérateur pipeline (**|>** package **base** ou **%>%** du package **magrittr**), permet le calcul en une seule instruction $$v_4 \leftarrow x |> t()|>h()|>f()|>g()$$ Avec Python, dispose d'une fonction **.pipe()** que verrons.
 
-<div><p style="font-size: 2em; color: blue;">Stockage des données</p>
+<div><p style="font-size: 2em; color: blue;">Variables et stockage des données</p>
 
 :::{.columns}
 
@@ -144,6 +145,8 @@ yvec<-5+3*xsec+wvec*rnorm(xsec) # ajout d'un bruit
 
 df<-data.frame(x=xsec,y=yvec,w=wvec) # Le data.frame
 head(df)
+
+liste<-list("RDC", TRUE, 100)  # une liste
 
 rm(xsec,yvec,wvec) #Suppression de variable
 
@@ -173,6 +176,8 @@ print(A)
 df = pd.DataFrame({"x": xsec,"y": yvec,"w": wvec}) # Le DataFrame
 print(df.head())
 
+liste=["RDC", True, 100]  # Une liste
+
 # Suppression des variables
 del xsec
 del yvec
@@ -188,6 +193,7 @@ del wvec
 
 Comme on peut le voir, les syntaxes sont assez proches. Le concept de **data frame** est commun aux deux langages. C'est le tableau de données statistiques. Avec R,le package **dplyr** est fondamental pour la manipulation des data frame, comme l'est **panda** avec Python. 
 
+Dans les deux langages les fonctions sont stockées comme objets de type **closure** et manipulables comme des objets classiques. Une fonction peut ainsi être passée en paramètre à une autre fonction. 
 
 <div><p style="font-size: 2em; color: blue;">Les fonctions</p>
 :::{.columns}
@@ -273,7 +279,7 @@ Il est établit que $$\frac{\mbox{Aire}_{\mbox{cercle}}}{\mbox{Aire}_{\mbox{carr
 
 Pour estimer $\pi$ on simule $N$ points du carré, et fait le rapport en le nombre de points tirés, et le nombre dans le cercle.  
 
-<div><p style="font-size: 2em; color: blue;">Calcul itératif </p>
+<div><p style="font-size: 2em; color: blue;">Calcul itératif et conditions </p>
 
 :::{.columns}
 
@@ -283,6 +289,7 @@ Pour estimer $\pi$ on simule $N$ points du carré, et fait le rapport en le nomb
 ```{r}
 #| echo: true
 #| label: Calc4
+#| cache: true
 
 
 GetPI<-function(N,R=1){
@@ -315,6 +322,7 @@ head(df)
 ```{python}
 #| echo: true
 #| label: Calc4P
+#| cache: true
 
 def get_pi(N, R=1):
     npi = 0
@@ -340,6 +348,228 @@ print(df)
 ::::
 
 </div>
+
+
+## La recherche reproductible avec ![](../quarto.png){height="1.2em" style="vertical-align: middle;"} 
+
+### Premier document .qmd
+
+Un document comprend deux parties: l'en-tête **YAML(Yet Another Markup Language)** et le contenu rédactionnel qui contient le texte en **Markdown** et les blocs de code. Voici un exemple d'en-tête.
+
+````yaml
+---
+title: "Capital à l'entrée des banques de la RDC"
+author: "Jonas K"
+date: today
+date-format: "DD MMMMYYYY"
+lang: fr 
+
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    colorlinks: true
+---
+
+````
+
+Avant de produire des pdf, un générateur de PDF doit-être installé (MikTeX ou TeXLive) mais Quarto peut utiliser un générateur léger **TinyTeX**. Après avoir installé quarto, l'installation de TinyTeX se fait avec la commande: 
+
+
+```bash
+#| eval: false
+
+quarto install tinytex
+```
+
+
+
+Le document va être ensuite structuré en sections, sous-sections, des références bibliographiques, du code pour les calculs, graphiques.  
+
+````markdown
+
+## Introduction {-}
+
+La solidité d'une banque repose sur la qualité et le niveau de ses fonds propres. Le superviseur doit s'assurer qu'aussi bien au moment de la création que de son existance, elle dispose de fonds propres suffisants. 
+
+Le Comité de Bâle a fixé les exigences en fonds propres des banques tout au long de leur existence. A minima, les fonds propres des banques doivent toujours couvrir 8% des ses risques pondérés. Cependant, rien n'est dit sur le capital de départ d'une banque. Comment alors fixé le capital de départ d'une banque ?
+
+L'objectif de cet article est de proposer une approche de fixation du capital d'entrée d'une banque. La première partie présente le cadre analytique, la seconde les principaux résultats. 
+
+## Cadre analytique
+
+Plusieurs facteurs peuvent justifier l'augmentation du capital des banques. Notamment, le développement économique avec des besoins croissants de financement et l'émergence de nouveaux. Si nous désignons par $Y$, le niveau d'activité ou de production des banques, nous pouvons écrire la fonction de demande de capital comme:
+$$K^d = F(r,Y,L)$$ $K^d $ est la demande de capital, $r$ le taux de rémunération du capital, $L$ le travail. Dans le secteur bancaire, la technologie peut être plus importante que la main d'oeuvre. La fonction de demande peut s'écrire : 
+
+$$K^d = F(r,Y,A)$$ $A$ est la technologie. La figure ci-après montre le lien entre le total de bilan et les fonds propres de la banque.
+
+```{{r}}
+
+    read_xlsx('../Regdata.xlsx')|>
+    ggplot(aes(x=`total bilan`,y=`fonds propres`,colour=categorie))+geom_point()+theme(legend.title=element_blank(),legend.position="bottom")
+
+```
+
+
+## Principaux resultats
+
+## Conclusion et recommandations {-}
+
+````
+
+Pour compiler le document, deux options sont disponibles, utiliser Quarto en ligne de commande 
+
+````bash
+quarto render fichier.qmd
+````
+ou utiliser le package quarto de R.
+
+````r
+quarto_render("fichier.qmd")
+````
+
+## Introduction à SQL 
+
+### Le concept de base de données 
+
+@codd1970 a introduit le concept de bases de données relationnelles . Il a fournit un modèle permettant de structurer et de gérer efficacement de grandes quantités de données en utilisant des tables liées par des relations. Son approche a révolutionné le stockage et l’extraction des informations, facilitant l’analyse de données à grande échelle et posant les bases des systèmes de gestion de bases de données modernes (SGBD).
+
+Une base de données est un ensemble de données organisées en **tables (ou relations)** liées entre elles par des identifiants communs. L'utilisateur ne souci pas de la manière dont sont stockées les informations, c'est le SGBR qui s'en charge.
+
+:::{.notes}
+Avec Excel, toute l'information est stockèe dans un seul fichier. 
+:::
+
+Les concepts suivant sont fondamentaux :
+
+- **Table (ou relation)** : reprèsente une entité avec ses informations (banque, prêt, transfert);
+- **Ligne (Tuple, enregistrement)** : occurence d'une entité
+- **Colonne (Attribut)** : Une caractéristique spécifique de l'entité (ex: Nom, Date_de_naissance, Montant_du_credit).
+- **Clé Primaire (Primary Key)** : L'identifiant unique d'une ligne dans une table (ex: Id_Client). Elle garantit qu'aucune ligne ne peut être confondue avec une autre.
+- **Clé Étrangère (Foreign Key)** : C'est une colonne qui fait référence à la clé primaire d'une autre table, permettant de créer une relation entre les deux.
+
+:::{.r-fit-text}
+
+![](../SGBD.png)
+
+:::
+
+### Le langage SQL
+
+À la suite du travail de Codd, @sql1974 sont chargés de créer un langage capable d'interroger ces bases de données. Ils proposent un langage baptisé **SEQUEL (Structured English Query Language)**, car il a été conçu pour être aussi lisible qu'une phrase en anglais. Le changement de nom intervient pour des raisons de marque déposée (SEQUEL était déjà utilisé par une autre entreprise), le nom a été raccourci en SQL.
+
+Ce langage permet d'interagir avec une base de données realtionnelle. Il est très concis avec juste quatre commande de base. Il est structuré en plusieurs volets, un langage de manipulation des données **LMD**, langage de définition des données **LDD**, le contrôle des accès **DCL**(Data Control language). 
+
+```{r}
+#| label: tabsql
+#| echo: false
+
+    library(kableExtra)
+
+    dplyr::tibble(
+        colonne =c("SELECT","INSERT","UPDATE","DELETE","CREATE","DROP","GRANT","REVOKE"),
+        role=c("Lecture des données","Ajout des données","Mise à jour des données","Suppréssion des données","Création d'objets (BDD, Table, Utilisateur)","Suppression d'objets","Attribution des droits","Révocation des droits")
+    )|>kable(col.names=c("Commande","Fonction"))|>pack_rows("LMD",1,4)|>pack_rows("LDD",5,6)|>pack_rows("DCL",7,8)
+
+```
+
+Le langage SQL est normé (**ISO/IEC 9075**). En pratique, les éditeurs de logiciel de base de données (SGBDR) ajoutent  leurs propres fonctionnalités propriétaires, appelées **dialectes** (comme le PL/SQL chez Oracle ou le Transact-SQL chez Microsoft). Il existe une multitude de SGBDR. Les principaux sont : PostgreSQL, Oracle, MySQL, MS SQL Sever. Pour des utilisateurs à faible echelle SQLite, Microsoft Access. Il existe aussi des solutions cloud comme **BigQuery** de Google.
+
+La bonne nouvelle est que SQL peut-être utiliser entièrement depuis R et Python pour la plupart des SGBDR. Dans R, il existe des packages pour la plupart des SGBDR : **ROracle, RPostgres, RMySQL, RODBC, RSQLite** avec Python les modules **psycopg2, mysql-connector-python, sqlite3**. Nous allons illustrer les concepts SQL avec SQLite, qui est intégré à R et Python. Nous traiterons du LDD et du LMD.
+
+
+
+:::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: DBRLDD
+
+library(RSQLite) #Chargement du package
+library(DBI)     #Interface standard de connection
+
+con<-dbConnect(SQLite(),"dbBCC.db",extended_type=TRUE)   # Objet de connexion au SGBDR
+
+"create table if not exists capital (
+
+    id_banque integer not null,
+    capital interger not null,
+    bilan   integer not null,
+    categorie text not null,
+    pays text not null,
+
+    primary key (id_banque)
+)"|>dbExecute(con,statement=_)
+
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: DBPythonLDD
+
+import sqlite3
+con = sqlite3.connect("dbBCC.db") # Connexion à la base de données
+
+reqSQL= """
+CREATE TABLE IF NOT EXISTS capital (
+    id_banque INTEGER NOT NULL,
+    capital INTEGER NOT NULL,
+    bilan INTEGER NOT NULL,
+    categorie TEXT NOT NULL,
+    pays TEXT NOT NULL,
+    PRIMARY KEY (id_banque)
+)
+"""
+con.execute(reqSQL) # Exécution de la requête
+
+```
+
+:::
+
+::::
+
+Chargeons la base ave un fichier Excel
+
+```{r}
+#| label: loadDB
+
+# Chargement avec un fichier Excel
+n<-"select count(*) from capital"|>
+    dbGetQuery(con,statement=_)|>unlist() # Nb de tuples dans la table
+
+if(n==0){
+    library(readxl)
+    capdata<-read_xlsx("../Regdata.xlsx")
+    nobs<-dim(capdata)[1]
+
+    for (i in 1:nobs){
+        req<-paste0(
+            "INSERT INTO capital (id_banque, capital, bilan, categorie, pays)
+            VALUES (",capdata[i,1],",",capdata[i,2],",",capdata[i,3],",'",capdata[i,4],"','",capdata[i,5],"')"
+        )
+        
+        ok<-dbExecute(con,req)
+        if(ok==0) {
+            paste0("Requête :",req,"\n","exécutée avec succès...\n")|>cat()
+        }
+    }
+
+} else {
+    cat("BDD déjà chargée...\n")
+}
+
+```
+
+Nous allons maintenant aborder la commande **SELECT**
 
 ## Références du chapitre
 
