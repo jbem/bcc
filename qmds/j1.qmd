@@ -10,9 +10,6 @@ lang: fr
 format:
   revealjs:
     theme: simple
-    margin: 0.01
-    width: 1280
-    height: 720
     slide-number: true
     show-slide-number: all
     preview-links: auto
@@ -53,7 +50,7 @@ fortunes::fortune("ACM")|>print()
 
 ## Installation des outils 
 
-L'installation de R et Python se fait en général à partir des programme d'installation fournit par les sites oficiels des deux langages (www.r-project.org et www.phyton.org). Pour une utilisation lus efficace, il existe des outils plus performants notamment pour gestion des projets complexes (Rstudio, PyCharm, Positron, VS Code). Ces utils permettent de faire simulatenement les deux. Pour cette formation nous allons utiliser [Positron](https://positron.posit.co)  
+L'installation de R et Python se fait en général à partir des programme d'installation fournit par les sites oficiels des deux langages (www.r-project.org et www.python.org). Pour une utilisation lus efficace, il existe des outils plus performants notamment pour gestion des projets complexes (Rstudio, PyCharm, Positron, VS Code). Ces utils permettent de faire simulatenement les deux. Pour cette formation nous allons utiliser [Positron](https://positron.posit.co)  
 
 **La fin du copier-coller ?** Une autre force ces outils c'est de permettre la _recherche reproductible_. Traditionnellement, pour rediger un rapport d'analyse, on utilise un logicel de traitement de texte, on realise les calculs et les graphiquesailleurs et souventpar copier-coller,les resultats sont intégrés au rapport. Avec R et Python, il est assez aisé de générer des rapports dynamiques. C'est à ce stade qu'intervient [**Quarto**](https://quarto.org)  
 
@@ -466,13 +463,13 @@ Ce langage permet d'interagir avec une base de données realtionnelle. Il est tr
 ```{r}
 #| label: tabsql
 #| echo: false
-
+       
     library(kableExtra)
 
     dplyr::tibble(
         colonne =c("SELECT","INSERT","UPDATE","DELETE","CREATE","DROP","GRANT","REVOKE"),
         role=c("Lecture des données","Ajout des données","Mise à jour des données","Suppréssion des données","Création d'objets (BDD, Table, Utilisateur)","Suppression d'objets","Attribution des droits","Révocation des droits")
-    )|>kable(col.names=c("Commande","Fonction"))|>pack_rows("LMD",1,4)|>pack_rows("LDD",5,6)|>pack_rows("DCL",7,8)
+    )|>kable(format= "html",col.names=c("Commande","Fonction"))|>pack_rows("LMD",1,4)|>pack_rows("LDD",5,6)|>pack_rows("DCL",7,8)
 
 ```
 
@@ -603,6 +600,17 @@ Cette commande lire les informations d'une ou plusieurs tables. Nous allons illu
 "select id_banque, capital, log(bilan) as taille from capital"|>
     dbGetQuery(con,statement=_)|>head()
 
+# Selection avec filtre des informations 
+"select * 
+from capital
+where pays='Cameroun'"|>
+    dbGetQuery(con,statement=_)|>head()
+
+# Afficher les modalités de variable pays  clause: distinct 
+"select distinct pays  from capital"|>dbGetQuery(con, statement=_)
+
+# Compter le nombre de tuples de la table
+"select count(*) from capital"|>dbGetQuery(con, statement=_)
 
 ```
 
@@ -626,6 +634,30 @@ print(capital.head())
 # Lire quelques variables et création de nouvelles variables
 capital= pd.read_sql(
     "select id_banque, capital, log(bilan) as taille from capital",
+    con
+)
+
+print(capital.head())
+
+# Selection avec filtre des informations 
+capital= pd.read_sql(
+    "select * from capital where pays='Gabon'",
+    con
+)
+
+print(capital.head())
+
+# Afficher les modalités de variable pays  clause: distinct 
+capital= pd.read_sql(
+    "select distinct pays  from capital",
+    con
+)
+
+print(capital.head())
+
+# Compter le nombre de tuples de la table
+capital= pd.read_sql(
+    "select count(*)  from capital",
     con
 )
 
