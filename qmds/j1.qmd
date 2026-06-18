@@ -10,6 +10,9 @@ lang: fr
 format:
   revealjs:
     theme: simple
+    margin: 0.01
+    width: 1280
+    height: 720
     slide-number: true
     show-slide-number: all
     preview-links: auto
@@ -42,7 +45,7 @@ fortunes::fortune("ACM")|>print()
 
 - Le langage Python quant-à lui est apparu cinq ans plutôt en 1991, développé par **Guido van Rossum** aux Pays-Bas.Il est aujoud'hui le logiciel le plus utilisé pour l'IA. 
 
-- Ce deux logiciels, se distinguent par leur flexibilité et leur interactivité. En effet, les logiciels comme SAS et SPSS ont un modèle d'analyse différée. Avec ce modèle, soumet une tâche en fournissant des données et les instructions, le logiciel effectue les analyse et imprime les informations susceptibles d'interser l'utilisateur qui scrute ces resultats pour extraire ce qui l'interesse, et est limité aux processus proposés par le logiciel. 
+- Ce deux logiciels, se distinguent par leur flexibilité et leur interactivité. En effet, les logiciels comme SAS et SPSS ont un modèle d'analyse différée. Avec ce modèle, soumet une tâche en fournissant des données et les instructions, le logiciel effectue les analyse et imprime les informations susceptibles d'intéresser l'utilisateur qui scrute ces resultats pour extraire ce qui l'interèsse, et est limité aux processus proposés par le logiciel. 
 
 - De l'autre côté, des langages performants comme C++ ou Java ne sont pas interactifs, car doivent être compilés, ce qui n'en fait pas outils de premier choix pour l'analyse des données.  
 
@@ -569,7 +572,70 @@ if(n==0){
 
 ```
 
-Nous allons maintenant aborder la commande **SELECT**
+Nous allons maintenant aborder la commande **SELECT** sa structure est de la forme 
+````sql
+SELECT [ ALL | DISTINCT ]
+       <liste_des_expressions>
+FROM   <table_reference>
+WHERE  <condition>
+GROUP BY <colonnes>
+HAVING <condition>
+ORDER BY <expression>;
+````
+
+Cette commande lire les informations d'une ou plusieurs tables. Nous allons illustrer par des exemples. Les commandes peuvent lancées en utilisant **Positron** ou depuis R ou Python. 
+
+
+
+:::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: SELECTR1
+
+# Lire la table capital
+"select * from capital"|>dbGetQuery(con, statement=_)|>head()
+
+# Lire quelques variables et création de nouvelles variables
+"select id_banque, capital, log(bilan) as taille from capital"|>
+    dbGetQuery(con,statement=_)|>head()
+
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: SELECTPython1
+
+# Lire la table capital
+capital= pd.read_sql(
+    "select * from capital",
+    con
+)
+
+print(capital.head())
+
+# Lire quelques variables et création de nouvelles variables
+capital= pd.read_sql(
+    "select id_banque, capital, log(bilan) as taille from capital",
+    con
+)
+
+print(capital.head())
+
+```
+
+:::
+
+::::
 
 ## Références du chapitre
 
