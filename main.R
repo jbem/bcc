@@ -29,6 +29,6 @@ if(!file.exists('stats.xlsx')){
     pgcon<-dbConnect(Postgres(), dbname = 'cerber', host = 'localhost', user = 'dbadmin', 
              password = '12345', port = 5432, timezone = NULL, bigint='integer')
 
-    stats<-"select * from bancarisation"|>dbGetQuery(pgcon, statement = _)
+    stats<-"select * from public.bancarisation"|>dbGetQuery(pgcon, statement = _)
     write_xlsx(stats,"stats.xlsx")
 }
