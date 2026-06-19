@@ -20,4 +20,5 @@ library(magrittr)
 use_virtualenv("~/.radian")
 source_python("imports.py")
 
-
+Sys.setlocale("LC_CTYPE","fr_FR.UTF-8")
+Sys.setlocale("LC_ALL","fr_FR.utf8")

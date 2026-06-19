@@ -610,7 +610,7 @@ where pays='Cameroun'"|>
 "select distinct pays  from capital"|>dbGetQuery(con, statement=_)
 
 # Compter le nombre de tuples de la table
-"select count(*) from capital"|>dbGetQuery(con, statement=_)
+"select count(*) as N from capital"|>dbGetQuery(con, statement=_)
 
 ```
 
@@ -657,7 +657,85 @@ print(capital.head())
 
 # Compter le nombre de tuples de la table
 capital= pd.read_sql(
-    "select count(*)  from capital",
+    "select count(*) as N from capital",
+    con
+)
+
+print(capital.head())
+
+```
+
+:::
+
+::::
+
+La commande **SELECT** ne se limite pas à afficher les données, elle permet d'obtenir des résumés (Moyenne,Max, Min, Somme...) sur l'ensemble de la table ou par groupe. Nous allons voir ce volet analytique. 
+
+
+
+:::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: SELECTR2
+
+# Afficher les statistiques des variables
+"select AVG(capital) as Moyenne, SUM(capital) as Total from capital"|>dbGetQuery(con, statement=_)|>head()
+
+# statistiques par pays
+"select pays, AVG(capital) as Moyenne, SUM(capital) as Total
+ from capital
+ group by pays"|> dbGetQuery(con,statement=_)|>head()
+
+# Filtre sur les statistiques 
+"select pays, AVG(capital) as Moyenne, SUM(capital) as Total
+ from capital
+ group by pays
+ having capital>50000"|>
+    dbGetQuery(con,statement=_)|>head()
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: SELECTPython2
+
+# statistiques du capital par pays et catégories
+capital= pd.read_sql(
+    "select pays, categorie, AVG(capital) as Moyenne, SUM(capital) as Total " 
+    "from capital group by pays, categorie",
+    con
+)
+
+print(capital.head())
+
+# Selection avec filtre des informations 
+capital= pd.read_sql(
+    "select * from capital where pays='Gabon'",
+    con
+)
+
+print(capital.head())
+
+# Afficher les modalités de variable pays  clause: distinct 
+capital= pd.read_sql(
+    "select distinct pays  from capital",
+    con
+)
+
+print(capital.head())
+
+# Compter le nombre de tuples de la table
+capital= pd.read_sql(
+    "select count(*) as N from capital",
     con
 )
 
