@@ -597,7 +597,7 @@ if (!dbExistsTable(con,"capital")){
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
 
-engine = create_engine("sqlite:///dbBCC.db")
+engine = create_engine("sqlite:///../dbBCC.db")
 insp = inspect(engine)
 
 if "loansdeposits" not in insp.get_table_names():
