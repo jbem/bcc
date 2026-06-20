@@ -501,6 +501,41 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
     primary key (id_banque, id_pays)
 )"|>dbExecute(con,statement=_)
 
+"create table if not exists capital (
+    id_banque     integer not null,
+    id_pays       interger not null,
+    annee         integer not null,
+    mois          integer not null,
+    fpc           float not null,
+    bilan         float not null,
+    fpr           float not null,
+    rwa           float not null,
+    primary key (id_banque, id_pays, annee, mois)
+)"|>dbExecute(con,statement=_)
+
+"create table if not exists liquidity (
+    id_banque     integer not null,
+    id_pays       interger not null,
+    annee         integer not null,
+    mois          integer not null,
+    pnl1          float not null,
+    pnl2          float not null,
+    pnl3          float not null,
+    pnl4          float not null,
+    primary key (id_banque, id_pays, annee, mois)
+)"|>dbExecute(con,statement=_)
+
+"create table if not exists capital (
+    id_banque     integer not null,
+    id_pays       interger not null,
+    annee         integer not null,
+    mois          integer not null,
+    depots        float not null,
+    credits       float not null,
+    provisions    float not null,
+    npl           float not null,
+    primary key (id_banque, id_pays, annee, mois)
+)"|>dbExecute(con,statement=_)
 
 ```
 
@@ -657,7 +692,7 @@ Cette commande lire les informations d'une ou plusieurs tables. Nous allons illu
 "select * from capital"|>dbGetQuery(con, statement=_)|>head()
 
 # Lire quelques variables et création de nouvelles variables
-"select banque, id_pays, fpc,fpr, rwa, log(bilan) as taille from capital"|>
+"select id_banque, id_pays, fpc,fpr, rwa, log(bilan) as taille from capital"|>
     dbGetQuery(con,statement=_)|>head()
 
 # Selection avec filtre des informations 
@@ -693,7 +728,7 @@ print(capital.head())
 
 # Lire quelques variables et création de nouvelles variables
 capital= pd.read_sql(
-    "select banque, id_pays, fpc, fpr, rwa, log(bilan) as taille from capital",
+    "select id_banque, id_pays, fpc, fpr, rwa, log(bilan) as taille from capital",
     con
 )
 
