@@ -492,6 +492,7 @@ library(RSQLite) #Chargement du package
 library(DBI)     #Interface standard de connection
 
 con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion au SGBDR
+"PRAGMA foreign_keys=ON"|>dbExecute(con,statement=_)
 
 "create table if not exists banque (
     id_banque     integer not null,
@@ -510,7 +511,7 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
     bilan         float not null,
     fpr           float not null,
     rwa           float not null,
-    primary key (id_banque, id_pays, annee, mois)
+    primary key (id_banque, id_pays, annee, mois),
     foreign key (id_banque, id_pays) references banque (id_banque, id_pays)
         on update cascade
         on delete cascade
@@ -525,7 +526,7 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
     pnl2          float not null,
     pnl3          float not null,
     pnl4          float not null,
-    primary key (id_banque, id_pays, annee, mois)
+    primary key (id_banque, id_pays, annee, mois),
     foreign key (id_banque, id_pays) references banque (id_banque, id_pays)
         on update cascade
         on delete cascade
@@ -540,7 +541,7 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
     credits       float not null,
     provisions    float not null,
     npl           float not null,
-    primary key (id_banque, id_pays, annee, mois)
+    primary key (id_banque, id_pays, annee, mois),
     foreign key (id_banque, id_pays) references banque (id_banque, id_pays)
         on update cascade
         on delete cascade
@@ -578,7 +579,7 @@ con.execute(reqSQL) # Exécution de la requête
 
 ::::
 
-Chargeons la base ave un fichier Excel
+Chargeons la base avec les fichiers Excel
 
 ```{r}
 #| label: loadDB
@@ -594,8 +595,7 @@ if(n==0){
 
     for (i in 1:nobs){
         req<-paste0(
-            "INSERT INTO banque (id_banque, id_pays, categorie, pays)
-            VALUES (",bks[i,1],",",bks[i,2],",",bks[i,3],",'",bks[i,4],"')"
+            "INSERT INTO banque (id_banque, id_pays, categorie, pays) VALUES (",bks[i,1],",",bks[i,2],",",bks[i,3],",'",bks[i,4],"')"
         )
         
         ok<-dbExecute(con,req)
@@ -828,8 +828,74 @@ print(capital.head())
 
 ::::
 
+Dans une BDD, toutes les infirmations ne sont pas stockées dans une seule table. ces bases peuvent avoir des dizaines, voir des milliers de tables liées entre elles. la BDD que nous avons créée est affichée ci-après :
+
+![](../dbBCC.png)
+
+Supporsons que l'on souhaite calculer le ratio **NPL non provisionnées sur fonds propres** c'est un des indicateur de stablité financière du FMI. Les informations se trouvent dans deux tables. Il faut alors recourir au mecanisme de **jointure** de SQL. Les jointures se font sur un certains nombres de champs. 
+
+```{r}
+#| label: tabjoin
+#| echo: false
+       
+    library(kableExtra)
+
+    dplyr::tibble(
+        colonne =c("INNER JOIN","LEFT JOIN","RIGH JOIN","FULL OUTER JOIN","CROSS JOIN","SELF JOIN"),
+        role=c("Conserve les informations pour lesquelles champs jointures sont identiques","Conserve toute la tableau de gauche et lie les informations correspondantes de la table à droite","Idem à droite","Combine les deux tables  en ajoutant des NULL en cas de non correspondance","Produit cartésien","Jointure d'une table avec elle")
+    )|>kable(format= "html",col.names=c("Option de jointure","Fonction"))
+
+```
+
+L'option **LEFT JOIN** est la plus utilisée en exploration ou consultation d'un BDD. Nous allons illustrer en calculant notre ISF. 
 
 
+:::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: SELECTR3
+#| eval: false
+
+"select c.annee, c.mois, pays, (sum(npl)-sum(provision))/sum(capital) as ISF
+from capital c
+    left join loansdeposits l on c.id_banque=l.id_banque and c.id_pays=l.id_pays and 
+                                c.annee=l.annee and c.mois=l.mois 
+    left join banque b on c.id_banque=b.id_banque and c.id_pays=b.id_pays 
+group by c.annee, c.mois, pays"|>dbGetQuery(con, statement=_)|>head()
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: SELECTPython3
+#| eval: false
+
+isf= pd.read_sql(
+    "select c.annee, c.mois, pays, (sum(npl)-sum(provision))/sum(capital) as ISF"
+    "from capital c"
+    "left join loansdepots l on c.id_banque=l.id_banque and c.id_pays=l.id_pays and" 
+    "                            c.annee=l.annee and c.mois=l.mois "
+    "left join banque b on c.id_banque=b.id_banque and c.id_pays=b.id_pays "
+    "group by c.annee, c.mois, pays",
+    con
+)
+
+print(isf.head())
+
+```
+
+:::
+
+::::
 
 ## Références du chapitre
 
