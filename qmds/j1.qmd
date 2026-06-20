@@ -495,7 +495,7 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
 
 "create table if not exists banque (
     id_banque     integer not null,
-    id_pays       interger not null,
+    id_pays       integer not null,
     categorie     integer not null,
     pays          text not null,
     primary key (id_banque, id_pays)
@@ -503,7 +503,7 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
 
 "create table if not exists capital (
     id_banque     integer not null,
-    id_pays       interger not null,
+    id_pays       integer not null,
     annee         integer not null,
     mois          integer not null,
     fpc           float not null,
@@ -511,11 +511,14 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
     fpr           float not null,
     rwa           float not null,
     primary key (id_banque, id_pays, annee, mois)
+    foreign key (id_banque, id_pays) references banque (id_banque, id_pays)
+        on update cascade
+        on delete cascade
 )"|>dbExecute(con,statement=_)
 
 "create table if not exists liquidity (
     id_banque     integer not null,
-    id_pays       interger not null,
+    id_pays       integer not null,
     annee         integer not null,
     mois          integer not null,
     pnl1          float not null,
@@ -523,11 +526,14 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
     pnl3          float not null,
     pnl4          float not null,
     primary key (id_banque, id_pays, annee, mois)
+    foreign key (id_banque, id_pays) references banque (id_banque, id_pays)
+        on update cascade
+        on delete cascade
 )"|>dbExecute(con,statement=_)
 
-"create table if not exists capital (
+"create table if not exists loansdeposits (
     id_banque     integer not null,
-    id_pays       interger not null,
+    id_pays       integer not null,
     annee         integer not null,
     mois          integer not null,
     depots        float not null,
@@ -535,7 +541,11 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
     provisions    float not null,
     npl           float not null,
     primary key (id_banque, id_pays, annee, mois)
+    foreign key (id_banque, id_pays) references banque (id_banque, id_pays)
+        on update cascade
+        on delete cascade
 )"|>dbExecute(con,statement=_)
+
 
 ```
 
