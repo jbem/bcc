@@ -60,3 +60,6 @@ if(!file.exists('banque.xlsx')){
     from public.banque"|>dbGetQuery(pgcon, statement = _)
     write_xlsx(bks,"banque.xlsx")
 }
+
+
+

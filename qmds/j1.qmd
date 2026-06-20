@@ -614,6 +614,20 @@ if "liquidity" not in insp.get_table_names():
 
 ::::
 
+```{r}
+#| label: ALTER
+#| echo: FALSE
+#| eval: FALSE
+
+"ALTER TABLE capital ADD PRIMARY KEY (banque, id_pays, annee, mois);"|>
+    dbExecute(con, statement=_)
+
+"ALTER TABLE liquidity ADD PRIMARY KEY (banque, id_pays, annee, mois);"|>
+    dbExecute(con, statement=_)
+
+"ALTER TABLE loansdeposits ADD PRIMARY KEY (banque, id_pays, annee, mois)"|>
+    dbExecute(con, statement=_)
+```
 
 Nous allons maintenant aborder la commande **SELECT** sa structure est de la forme 
 ````sql
