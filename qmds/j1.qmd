@@ -622,9 +622,10 @@ La création des tables peut être déléguée à R ou Python avec les fonctions
 #| echo: true
 #| label: WriteTableR
 
+n<-"select count(*) from capital"|> dbGetQuery(con,statement=_)|>unlist()
 
-if (!dbExistsTable(con,"capital")){
-    capital<-read_xlsx("../capital.xlsx")
+if (n==0){
+    capital<-readxl::read_xlsx("../capital.xlsx")
     dbWriteTable(con,"capital",capital,overwrite=T)
 }
 
@@ -645,11 +646,14 @@ from sqlalchemy import inspect
 engine = create_engine("sqlite:///../dbBCC.db")
 insp = inspect(engine)
 
-if "loansdeposits" not in insp.get_table_names():
+n = pd.read_sql_query("SELECT COUNT(*) AS n FROM loansdeposits",con).iloc[0, 0]
+
+if n==0:
     loansdeposits = pd.read_excel("../loansdeposits.xlsx")
     loansdeposits.to_sql("loansdeposits",engine,if_exists="replace",index=False)
 
-if "liquidity" not in insp.get_table_names():
+n = pd.read_sql_query("SELECT COUNT(*) AS n FROM liquidity",con).iloc[0, 0]
+if n==0:
     liquidity = pd.read_excel("../liquidity.xlsx")
     liquidity.to_sql("liquidity",engine,if_exists="replace",index=False)
 
@@ -858,9 +862,9 @@ L'option **LEFT JOIN** est la plus utilisée en exploration ou consultation d'un
 ```{r}
 #| echo: true
 #| label: SELECTR3
-#| eval: false
 
-"select c.annee, c.mois, pays, (sum(npl)-sum(provision))/sum(capital) as ISF
+
+"select pays, c.annee, c.mois, (sum(npl)-sum(provisions))/sum(fpr) as ISF 
 from capital c
     left join loansdeposits l on c.id_banque=l.id_banque and c.id_pays=l.id_pays and 
                                 c.annee=l.annee and c.mois=l.mois 
@@ -877,12 +881,11 @@ group by c.annee, c.mois, pays"|>dbGetQuery(con, statement=_)|>head()
 ```{python}
 #| echo: true
 #| label: SELECTPython3
-#| eval: false
 
 isf= pd.read_sql(
-    "select c.annee, c.mois, pays, (sum(npl)-sum(provision))/sum(capital) as ISF"
-    "from capital c"
-    "left join loansdepots l on c.id_banque=l.id_banque and c.id_pays=l.id_pays and" 
+    "select pays, c.annee, c.mois, (sum(npl)-sum(provisions))/sum(fpr) as ISF "
+    "from capital c "
+    "left join loansdeposits l on c.id_banque=l.id_banque and c.id_pays=l.id_pays and" 
     "                            c.annee=l.annee and c.mois=l.mois "
     "left join banque b on c.id_banque=b.id_banque and c.id_pays=b.id_pays "
     "group by c.annee, c.mois, pays",

@@ -29,7 +29,7 @@ if(!file.exists('banque.xlsx')){
     pgcon<-dbConnect(Postgres(), dbname = 'cerber', host = 'localhost', user = 'dbadmin', 
              password = '12345', port = 5432, timezone = NULL, bigint='integer')
 
-    capital<-"select cast(id_banque % 10000 as BIGINT) as banque, cast((id_banque -id_banque % 10000)/10000 as BIGINT) as id_pays, 
+    capital<-"select cast(id_banque % 10000 as BIGINT) as id_banque, cast((id_banque -id_banque % 10000)/10000 as BIGINT) as id_pays, 
     cast(extract(YEAR from date_valo) AS BIGINT) as annee, 
     cast(extract(MONTH from date_valo) AS BIGINT) as mois, trim(id_poste) as poste, valeur 
     from public.analyse
@@ -39,7 +39,7 @@ if(!file.exists('banque.xlsx')){
     write_xlsx(capital,"capital.xlsx")
 
     
-    loansdeposits<-"select id_banque % 10000 as banque, (id_banque - id_banque % 10000)/10000 as id_pays, extract(YEAR from date_valo) as annee, 
+    loansdeposits<-"select id_banque % 10000 as id_banque, (id_banque - id_banque % 10000)/10000 as id_pays, extract(YEAR from date_valo) as annee, 
     extract(MONTH from date_valo) as mois, trim(id_poste) as poste, valeur 
     from public.analyse
     where id_poste in ('AF043','AF051','AF057','AF029') and extract(YEAR from date_valo) in (2016,2017,2018)"|>
@@ -48,7 +48,7 @@ if(!file.exists('banque.xlsx')){
     write_xlsx(loansdeposits,"loansdeposits.xlsx")
 
 
-    liquidity<-"select id_banque % 10000 as banque, (id_banque -id_banque % 10000)/10000 as id_pays, extract(YEAR from date_valo) as annee, 
+    liquidity<-"select id_banque % 10000 as id_banque, (id_banque -id_banque % 10000)/10000 as id_pays, extract(YEAR from date_valo) as annee, 
     extract(MONTH from date_valo) as mois, trim(id_poste) as poste, valeur 
     from public.analyse 
     where id_poste in ('AF028','AF053','AF071','AF084') and extract(YEAR from date_valo) in (2016,2017,2018)"|>
