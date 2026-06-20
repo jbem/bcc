@@ -491,17 +491,14 @@ La bonne nouvelle est que SQL peut-être utiliser entièrement depuis R et Pytho
 library(RSQLite) #Chargement du package
 library(DBI)     #Interface standard de connection
 
-con<-dbConnect(SQLite(),"dbBCC.db",extended_type=TRUE)   # Objet de connexion au SGBDR
+con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion au SGBDR
 
-"create table if not exists capital (
-
-    id_banque integer not null,
-    capital interger not null,
-    bilan   integer not null,
-    categorie text not null,
-    pays text not null,
-
-    primary key (id_banque)
+"create table if not exists banque (
+    id_banque     integer not null,
+    id_pays       interger not null,
+    categorie     integer not null,
+    pays          text not null,
+    primary key (id_banque, id_pays)
 )"|>dbExecute(con,statement=_)
 
 
@@ -517,16 +514,15 @@ con<-dbConnect(SQLite(),"dbBCC.db",extended_type=TRUE)   # Objet de connexion au
 #| label: DBPythonLDD
 
 import sqlite3
-con = sqlite3.connect("dbBCC.db") # Connexion à la base de données
+con = sqlite3.connect("../dbBCC.db") # Connexion à la base de données
 
 reqSQL= """
-CREATE TABLE IF NOT EXISTS capital (
-    id_banque INTEGER NOT NULL,
-    capital INTEGER NOT NULL,
-    bilan INTEGER NOT NULL,
-    categorie TEXT NOT NULL,
-    pays TEXT NOT NULL,
-    PRIMARY KEY (id_banque)
+CREATE TABLE IF NOT EXISTS banque (
+    id_banque     INTEGER NOT NULL,
+    id_pays       INTEGER NOT NULL,
+    categorie     INTEGER NOT NULL,
+    pays          TEXT NOT NULL,
+    PRIMARY KEY (id_banque,id_pays)
 )
 """
 con.execute(reqSQL) # Exécution de la requête
@@ -543,18 +539,18 @@ Chargeons la base ave un fichier Excel
 #| label: loadDB
 
 # Chargement avec un fichier Excel
-n<-"select count(*) from capital"|>
+n<-"select count(*) from banque"|>
     dbGetQuery(con,statement=_)|>unlist() # Nb de tuples dans la table
 
 if(n==0){
     library(readxl)
-    capdata<-read_xlsx("../Regdata.xlsx")
-    nobs<-dim(capdata)[1]
+    bks<-read_xlsx("../banque.xlsx")
+    nobs<-dim(bks)[1]
 
     for (i in 1:nobs){
         req<-paste0(
-            "INSERT INTO capital (id_banque, capital, bilan, categorie, pays)
-            VALUES (",capdata[i,1],",",capdata[i,2],",",capdata[i,3],",'",capdata[i,4],"','",capdata[i,5],"')"
+            "INSERT INTO banque (id_banque, id_pays, categorie, pays)
+            VALUES (",bks[i,1],",",bks[i,2],",",bks[i,3],",'",bks[i,4],"')"
         )
         
         ok<-dbExecute(con,req)
@@ -568,6 +564,56 @@ if(n==0){
 }
 
 ```
+
+La création des tables peut être déléguée à R ou Python avec les fonctions **dbWriteTable** et **DataFrame.to_sql**. 
+
+
+:::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: WriteTableR
+
+
+if (!dbExistsTable(con,"capital")){
+    capital<-read_xlsx("../capital.xlsx")
+    dbWriteTable(con,"capital",capital,overwrite=T)
+}
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: WriteTablePython
+
+from sqlalchemy import create_engine
+from sqlalchemy import inspect
+
+engine = create_engine("sqlite:///dbBCC.db")
+insp = inspect(engine)
+
+if "loansdeposits" not in insp.get_table_names():
+    loansdeposits = pd.read_excel("../loansdeposits.xlsx")
+    loansdeposits.to_sql("loansdeposits",engine,if_exists="replace",index=False)
+
+if "liquidity" not in insp.get_table_names():
+    liquidity = pd.read_excel("../liquidity.xlsx")
+    liquidity.to_sql("liquidity",engine,if_exists="replace",index=False)
+
+```
+
+:::
+
+::::
+
 
 Nous allons maintenant aborder la commande **SELECT** sa structure est de la forme 
 ````sql
@@ -597,17 +643,17 @@ Cette commande lire les informations d'une ou plusieurs tables. Nous allons illu
 "select * from capital"|>dbGetQuery(con, statement=_)|>head()
 
 # Lire quelques variables et création de nouvelles variables
-"select id_banque, capital, log(bilan) as taille from capital"|>
+"select banque, id_pays, fpc,fpr, rwa, log(bilan) as taille from capital"|>
     dbGetQuery(con,statement=_)|>head()
 
 # Selection avec filtre des informations 
 "select * 
 from capital
-where pays='Cameroun'"|>
+where id_pays=1"|>
     dbGetQuery(con,statement=_)|>head()
 
 # Afficher les modalités de variable pays  clause: distinct 
-"select distinct pays  from capital"|>dbGetQuery(con, statement=_)
+"select distinct id_pays  from capital"|>dbGetQuery(con, statement=_)
 
 # Compter le nombre de tuples de la table
 "select count(*) as N from capital"|>dbGetQuery(con, statement=_)
@@ -633,7 +679,7 @@ print(capital.head())
 
 # Lire quelques variables et création de nouvelles variables
 capital= pd.read_sql(
-    "select id_banque, capital, log(bilan) as taille from capital",
+    "select banque, id_pays, fpc, fpr, rwa, log(bilan) as taille from capital",
     con
 )
 
@@ -641,7 +687,7 @@ print(capital.head())
 
 # Selection avec filtre des informations 
 capital= pd.read_sql(
-    "select * from capital where pays='Gabon'",
+    "select * from capital where id_pays=4",
     con
 )
 
@@ -649,7 +695,7 @@ print(capital.head())
 
 # Afficher les modalités de variable pays  clause: distinct 
 capital= pd.read_sql(
-    "select distinct pays  from capital",
+    "select distinct id_pays  from capital",
     con
 )
 
@@ -683,18 +729,18 @@ La commande **SELECT** ne se limite pas à afficher les données, elle permet d'
 #| label: SELECTR2
 
 # Afficher les statistiques des variables
-"select AVG(capital) as Moyenne, SUM(capital) as Total from capital"|>dbGetQuery(con, statement=_)|>head()
+"select AVG(fpc) as Moyenne, SUM(fpc) as Total from capital"|>dbGetQuery(con, statement=_)|>head()
 
 # statistiques par pays
-"select pays, AVG(capital) as Moyenne, SUM(capital) as Total
+"select id_pays, AVG(fpc) as Moyenne, SUM(fpc) as Total
  from capital
- group by pays"|> dbGetQuery(con,statement=_)|>head()
+ group by id_pays"|> dbGetQuery(con,statement=_)|>head()
 
 # Filtre sur les statistiques 
-"select pays, AVG(capital) as Moyenne, SUM(capital) as Total
+"select id_pays, AVG(fpc) as Moyenne, SUM(fpc) as Total
  from capital
- group by pays
- having capital>50000"|>
+ group by id_pays
+ having fpc>50000"|>
     dbGetQuery(con,statement=_)|>head()
 
 ```
@@ -708,34 +754,10 @@ La commande **SELECT** ne se limite pas à afficher les données, elle permet d'
 #| echo: true
 #| label: SELECTPython2
 
-# statistiques du capital par pays et catégories
+# statistiques du capital par pays et années
 capital= pd.read_sql(
-    "select pays, categorie, AVG(capital) as Moyenne, SUM(capital) as Total " 
-    "from capital group by pays, categorie",
-    con
-)
-
-print(capital.head())
-
-# Selection avec filtre des informations 
-capital= pd.read_sql(
-    "select * from capital where pays='Gabon'",
-    con
-)
-
-print(capital.head())
-
-# Afficher les modalités de variable pays  clause: distinct 
-capital= pd.read_sql(
-    "select distinct pays  from capital",
-    con
-)
-
-print(capital.head())
-
-# Compter le nombre de tuples de la table
-capital= pd.read_sql(
-    "select count(*) as N from capital",
+    "select id_pays, annee, AVG(fpc) as Moyenne, SUM(fpc) as Total " 
+    "from capital group by id_pays, annee",
     con
 )
 
@@ -746,6 +768,9 @@ print(capital.head())
 :::
 
 ::::
+
+
+
 
 ## Références du chapitre
 
