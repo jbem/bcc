@@ -24,6 +24,109 @@ format:
     smaller: true
     logo: ../logo.png
     css: ../custom.css
-    embed-resources: false
     
 ---
+
+## Programme de la journée
+
+L'objectif du jour est d'illustrer succinctement les outils de la **Data Science**. Le schema ci-après, inspiré de  [@r4ds] nous servira de fil conducteur. 
+
+:::{.r-fit-text}
+![](../r4ds.png)
+:::
+
+### Importation des données
+
+À des fins d'analyse, il existe une multiplicité de source et de forme de données. Elles doivent être lues et importées à des fins d'analyse. Nous verrons les principaux formats et source de données.
+
+### Nettoyage des données
+
+Les données importées ne sont pas toujours immédiatement exploitables. Les problèmes de qualité de données pour souvent sur les valeurs manquantes, les doublons, les erreurs de saisie, les formats incohérents et les valeurs aberrantes.
+
+### Analyse ou de compréhension 
+
+Elle comprend la transformation des données, la visualisation et la modélisation. Cette phase est souvent réalisée de manière itérative. On ne tombe pas touours sur le _meilleur modèle_ au premier coup. 
+
+### Communication 
+
+Nous aborderons deux approches de communications des rapports rédigés et des dashbarods intercatifs. 
+
+
+## Importation et nettoyage des données
+
+### Importation 
+
+Avec R, il existe de nombreux outils de lectures de données. Le tableau ci-après fait une synthèse. 
+
+
+```{r}
+#| label: rImportPkgs
+#| echo: false
+       
+    library(kableExtra)
+
+    dplyr::tibble(
+        colonne =c("base, readr", "readxl, openxlsx2","haven, foreign", "DBI+packages drivers","jsonlite","xml2","fredr, wbstats"),
+        role=c("csv, txt","Excel", "SAS/SPSS/Stata","Base de données","JSON","XML","FED, Banque Mondiale")
+    )|>kable(format= "html",col.names=c("Packages","Formats ou sources lues"))
+
+```
+
+En Python, la situation est plus centralisée autour de Pandas, même si Pandas s'appuie souvent sur d'autres bibliothèques en arrière-plan.
+
+Nous avons vu hier, la lecture depuis une base de données (SQlite) et des fichiers Excel. C'est les cas les plus fréquents mais on rencontre aussi des fichiers **.csv** ou **.txt**. Dans le repertoire data de votre repo, vous avez deux fichiers nommés **teams.csv** et **squads_and_players.csv** que nous allons importer dans R et Python. Ces fichiers comportent les informations sur les pays qui ont participé au mondial 2026. 
+
+::::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ImportCSVR
+
+library(readr)
+teams<-read_csv("../teams.csv")
+squads<-read_csv("../squads_and_players.csv")
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="0.86em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: ImportCSVPython
+
+import pandas as pd
+teams = pd.read_csv("../teams.csv")
+squads= pd.read_csv("../squads_and_players.csv")
+
+```
+
+:::
+
+::::
+
+```{r}
+#| echo: false
+
+head(teams)
+```
+
+Un cas de figure assez complexe est la lecture d'un tableau dans un fichier pdf. 
+
+<iframe
+  src=../databcc.pdf
+  width="100%"
+  height="500">
+</iframe>
+
+Nous allons essayer de lire ce tableau avec les outils de R
+
+## Références du chapitre
+
+::: {#refs}
+:::
