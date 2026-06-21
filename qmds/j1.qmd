@@ -69,6 +69,101 @@ nom_environnement\Scripts\activate
 
 L'enviromment est alors créé dans le dossier où la commande création est appelée,et la seconde commande l'active. 
 
+## Introduction au versionning : ![](../Git-Logo-1788C.png){height="1.2em" style="vertical-align: middle;"} 
+
+
+La gestion des versions sur un document ou un ensemble de fichiers et dossiers n'est pas évidente. Une des pratiquex reternue est de nommer le fichier différemment selon les modifications apprortées. Des logiciels comme MS World offrent un mode **suivi des modifications**. Cependant, ces approches sont inefficaces avec de nombreux risques lorsques les fichiers à gerer sont nombreux. Il n'y a pas par exemple ce suivi pour des fichiers pdf. La collaboration peut être délicate si de nomreuses personnes contribuent au projet. 
+
+>**Sans Git**  
+>rapport_v0.docx 
+>rapport_v1.docx 
+>rapport_v1_reluDG.docx 
+>rapport_final.docx 
+
+Un logiciel de gestion de version comme **Git** permet de :
+
+- conserver l'historique des modifications ;
+- revenir à une version antérieure ;
+- travailler à plusieurs ;
+- de suivre les modifications sur de nombreux fichiers de nature différente. 
+
+Vous pouvez travailler avec Git en local, ou mieux transférer vos données en ligne à travers des plateformes comme [**Github**](www.github.com),
+ [**GitLab**](about.gitlab.com) ou encore  [**Bitbucket**](www.bitbucket.org). On peut travailler avec Git de plusieurs manières.  En obtenant le programme
+ depuis le site officiel, vous aurez  un outil graphique et un outil de commande en ligne. La plupart des IDE (comme Positron) permette de travailler avec
+ Git directement. Les participants qui n'ont pas de compte github vont commencer par en créer. 
+
+### Concepts de base 
+
+**Dépôt (Repository)** : C'est le dossier contenant l'ensemble des fichiers du projet. Pour cette formation, le repo git aura la structure ci-dessous  :
+
+```text
+training/
+├── data/
+├── scripts/
+├── reports/
+├── index.qmd
+└── .git
+```
+
+Le repo est mis en place en se plaçant dans la racine du dossier training et en exécutant la commande
+
+````bash
+    # Initialisation du repo
+    git init
+
+    # Par défaut git crée une branche master : renommer par exemple main
+    git branch -M main
+
+    # Dire de suivre les fichiers index.qmd et autres
+    git add index.qmd
+    git add scripts/main.R
+    git add scripts/imports.py
+    
+````
+
+
+**Commit** 
+
+Un commit est un instantané du projet.  
+
+````bash
+git commit -m "Calcul du ratio CET1"
+````
+
+**Historique**
+
+C'est la liste de tous les commits du projet. la syntaxe est :
+
+````bash
+    git log
+
+    # Version compacte
+    git log --oneline
+````
+
+Pour aller à un état précédent, utilisez la commande
+
+````bash
+
+    git checkout <id-du-commit>
+    # git log --online  affiche les id des commits (7 chiffres en jaune au debut)
+
+    # Pour revenir au présent
+    git checkout main
+    
+````
+
+
+**Cycle de travail avec Git**
+
+![](../gitstage.png)
+
+
+Pour terminer,
+
+> **Git** est à l'analyse de données ce qu'un système de contrôle interne est à une banque : il permet de tracer, documenter et sécuriser l'évolution des travaux. GitHub ajoute une dimension collaborative en facilitant le partage et la revue des analyses.
+
+
 ## Premiers pas avec R et Python 
 
 <div><p style="font-size: 2em; color: blue;">Quelques commandes</p>
@@ -350,7 +445,7 @@ print(df)
 </div>
 
 
-## La recherche reproductible avec ![](../quarto.png){height="1.2em" style="vertical-align: middle;"} 
+## La recherche reproductible : ![](../quarto.png){height="1em" style="vertical-align: middle;"} 
 
 ### Premier document .qmd
 
