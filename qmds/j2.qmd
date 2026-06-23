@@ -112,6 +112,7 @@ squads= pd.read_csv("../squads_and_players.csv")
 
 ```{r}
 #| echo: false
+#| label: displayTeams
 
 head(teams)
 ```
@@ -121,10 +122,65 @@ Un cas de figure assez complexe est la lecture d'un tableau dans un fichier pdf.
 <iframe
   src=../databcc.pdf
   width="100%"
-  height="500">
+  height="100">
 </iframe>
 
-Nous allons essayer de lire ce tableau avec les outils de R
+Nous allons essayer de lire ce tableau avec les outils de R et Python.
+
+::::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ImportPdfDataR
+library(pdftools)
+library(stringr)
+
+# Récupération de la page 1
+p1<-pdf_text("../databcc.pdf")|>str_split(pattern="\n")
+
+# Passer de la liste au vecteur
+p1<-p1[[1]]
+
+# Lecture des lignes 11-14
+
+l11<-str_split(p1[11],"\\s+")
+l12<-str_split(p1[12],"\\s+")
+l13<-str_split(p1[13],"\\s+")
+l14<-str_split(p1[14],"\\s+")
+
+mois<-l11[[1]][-1]
+j7  <-l12[[1]][-1:-3]|>str_replace(",",".")|>as.numeric()
+j28 <-l13[[1]][-1:-8]|>str_replace("-","")|>str_replace(",",".")|>as.numeric()
+j84 <-l14[[1]][-1:-3]|>str_replace("-","")|>str_replace(",",".")|>as.numeric()
+annee<-c(rep(2017,2),rep(2018,11))
+
+tibble::tibble(annee, mois,j7,j28,j84)
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="0.86em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: ImportPdfDataPython
+
+import camelot
+
+tables=camelot.read_pdf("../databcc.pdf",pages="all")
+df=tables[0].df
+print(df)
+
+```
+
+:::
+
+::::
 
 ## Références du chapitre
 

@@ -12,10 +12,13 @@ library(scales)
 library(patchwork) 
 library(vars)
 library(broom)
+library(pdftools)
+library(stringr)
 library(reactable)
 library(quarto)
 library(magrittr)
 library(RPostgres)
+library(tibble)
 
 #-----RETICULATE --------
 use_virtualenv("~/.radian")
