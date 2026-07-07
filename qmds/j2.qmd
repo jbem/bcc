@@ -230,6 +230,16 @@ for (i in seq_along(lf)) sortie<-sortie|>bind_rows(ReadMyData(lf[i]))
 
 sortie
 
+# formatage des mois pour de 1 à 12 : plusieurs options je prefere left_join
+
+sortie <-sortie|>left_join(
+  tibble(
+    mois =str_extract(lf,pattern="(?<=[ -])[^.]+"),
+    cmois=c(4,6,5,8,12,2,1,7,3,11,10,9)
+  )
+)|>arrange(cmois)
+
+sortie
 
 ```
 :::
