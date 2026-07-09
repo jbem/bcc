@@ -257,6 +257,102 @@ sortie
 :::
 ::::
 
+## Analyse exploratoire et visualisation
+
+Dans cette partie, nous allons utiliser les données metiers enregistrées dans la base de données SQLite. Nous allons produire des résumés statistiques et visuels de données. 
+
+### Visualisation des données
+
+::: {.fragment}
+
+> *« Un bon croquis vaut mieux qu'un long discours. »*
+>
+> — Napoléon Bonaparte
+
+:::
+
+::: {.fragment}
+
+![](../minard1.jpeg){width=100%}
+
+
+:::
+
+@wilkinson05 propose une vision révolutionnaire de la visualisation des
+données : un graphique n'est pas un objet spécifique (histogramme, nuage de
+points, boîte à moustaches), mais la combinaison systématique de composants
+élémentaires tels que les données, les variables esthétiques (position,
+couleur, taille, forme), les transformations statistiques, les systèmes
+de coordonnées et les facettes. Cette  **grammaire** permet de construire
+pratiquement n'importe quel graphique complexe à partir d'un petit nombre
+de règles générales, de la même manière qu'une langue permet de produire
+une infinité de phrases à partir de règles grammaticales. Cette approche
+a profondément influencé la visualisation moderne et constitue le fondement
+théorique de bibliothèques comme **ggplot2** en R et, plus indirectement,
+de nombreux outils de visualisation contemporains.
+
+>**ggplot** est disponible aussi bien en R et Python.
+
+::::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ggplot1
+library(DBI)
+library(RSQLite)
+
+sqcon<-dbConnect(SQLite(),"../dbBCC.db")
+dbListTables(sqcon)
+
+capital<-dbReadTable(sqcon,"capital")
+
+# package de base ; Nuage de point
+
+plot(x=capital$bilan,y=capital$fpc,main="Activité vs capital",
+xlab="Total du bilan",ylab="fonds propres",pch=19,col='blue')
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="0.86em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: Python1Gr
+
+from sqlalchemy import create_engine
+from sqlalchemy import inspect
+import matplotlib.pyplot as plt
+ 
+
+
+engine = create_engine("sqlite:///../dbBCC.db")
+insp   = inspect(engine)
+print(insp.get_table_names())
+
+capital = pd.read_sql_table("capital",engine)
+
+plt.scatter(capital['bilan'],capital['fpc'],marker='o',color='blue',
+  s=40
+)
+
+plt.title("Acivité vs capital")
+plt.xlabel("Total bilan")
+plt.ylabel("Fonds propres")
+plt.grid(alpha=0.3)
+plt.show()
+
+```
+
+:::
+::::
+
+
 
 ::::{.columns}
 
@@ -282,7 +378,6 @@ sortie
 
 :::
 ::::
-
 
 ## Références du chapitre
 
