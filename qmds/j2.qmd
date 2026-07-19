@@ -29,7 +29,7 @@ format:
 
 ## Programme de la journée
 
-L'objectif du jour est d'illustrer succinctement les outils de la **Data Science**. Le schema ci-après, inspiré de  [@r4ds] nous servira de fil conducteur. 
+L'objectif du jour est d'illustrer succinctement les outils de la **Data Science**. Le schéma ci-après inspiré de [@r4ds] nous servira de fil conducteur. En outre, vous travaillerez directement dans le fichier *index.qmd* du répertoire **training** dans le **repo git** qui vous avez téléchargé.   
 
 :::{.r-fit-text}
 ![](../r4ds.png)
@@ -62,7 +62,7 @@ Avec R, il existe de nombreux outils de lectures de données. Le tableau ci-apr�
 ```{r}
 #| label: rImportPkgs
 #| echo: false
-       
+    library(tidyverse)   
     library(kableExtra)
 
     dplyr::tibble(
@@ -74,7 +74,7 @@ Avec R, il existe de nombreux outils de lectures de données. Le tableau ci-apr�
 
 En Python, la situation est plus centralisée autour de Pandas, même si Pandas s'appuie souvent sur d'autres bibliothèques en arrière-plan.
 
-Nous avons vu hier, la lecture depuis une base de données (SQlite) et des fichiers Excel. C'est les cas les plus fréquents mais on rencontre aussi des fichiers **.csv** ou **.txt**. Dans le repertoire data de votre repo, vous avez deux fichiers nommés **teams.csv** et **squads_and_players.csv** que nous allons importer dans R et Python. Ces fichiers comportent les informations sur les pays qui ont participé au mondial 2026. 
+Nous avons vu hier, la lecture depuis une base de données (SQlite) et des fichiers Excel. C'est le cas les plus fréquents, mais on rencontre aussi des fichiers **.csv** ou **.txt**. Dans le répertoire data de votre repo, vous avez deux fichiers nommés **teams.csv** et **squads_and_players.csv** que nous allons importer dans R et Python. Ces fichiers comportent les informations sur les pays qui ont participé au mondial 2026. 
 
 ::::{.columns}
 
@@ -259,7 +259,7 @@ sortie
 
 ## Analyse exploratoire et visualisation
 
-Dans cette partie, nous allons utiliser les données metiers enregistrées dans la base de données SQLite. Nous allons produire des résumés statistiques et visuels de données. 
+Dans cette partie, nous allons utiliser les données métiers enregistrées dans la base de données SQLite. Nous allons produire des résumés statistiques et visuels de données. 
 
 ### Visualisation des données
 
@@ -283,7 +283,7 @@ données : un graphique n'est pas un objet spécifique (histogramme, nuage de
 points, boîte à moustaches), mais la combinaison systématique de composants
 élémentaires tels que les données, les variables esthétiques (position,
 couleur, taille, forme), les transformations statistiques, les systèmes
-de coordonnées et les facettes. Cette  **grammaire** permet de construire
+de coordonnées et les facettes. Cette **grammaire** permet de construire
 pratiquement n'importe quel graphique complexe à partir d'un petit nombre
 de règles générales, de la même manière qu'une langue permet de produire
 une infinité de phrases à partir de règles grammaticales. Cette approche
@@ -308,12 +308,24 @@ sqcon<-dbConnect(SQLite(),"../dbBCC.db")
 dbListTables(sqcon)
 
 capital<-dbReadTable(sqcon,"capital")
-
+banque <-dbReadTable(sqcon,"banque")
 # package de base ; Nuage de point
 
 plot(x=capital$bilan,y=capital$fpc,main="Activité vs capital",
 xlab="Total du bilan",ylab="fonds propres",pch=19,col='blue')
 
+# Un camembert des parts du capital
+## preparation des data
+
+tab<-capital|>left_join(banque)|>group_by(pays)|>
+summarise(capital=sum(fpc),bilan=sum(bilan))
+tab
+
+pie(tab$capital,labels=tab$pays)
+
+## un diagramme a barre du capital et du total bilan
+barplot(t(cbind(tab$capital,tab$bilan)),legend=c("Capital","Total bilan"),
+       names.arg=tab$pays,beside=TRUE)
 ```
 
 :::
@@ -327,10 +339,11 @@ xlab="Total du bilan",ylab="fonds propres",pch=19,col='blue')
 
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
+
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
  
-
-
 engine = create_engine("sqlite:///../dbBCC.db")
 insp   = inspect(engine)
 print(insp.get_table_names())
@@ -347,10 +360,167 @@ plt.ylabel("Fonds propres")
 plt.grid(alpha=0.3)
 plt.show()
 
+# recuperation de tab avec Python via reticulate
+tab=r.tab
+print(tab)
+
+plt.pie(tab['capital'],labels=tab['pays'])
+
+
+
 ```
 
 :::
 ::::
+
+Comme on peut le constater, chaque type de graphique dispose de sa commande
+spécifique _plot, pie, barplot..._. @wickham2016 implémente une grammaire graphique
+pour R. Il est lauréat du prix **COPSS[^1] (Comité des présidents de sociétés statistiques,
+Committee of Presidents of Statistical Societies)**    
+
+[^1]: une distinction remise chaque année par le Comité des présidents des sociétés statistiques à une personne âgée de moins de 41 ans, en reconnaissance de ses contributions exceptionnelles à la profession de statistiques.
+Le prix COPSS, avec le Prix international de statistiques, sont considérés
+comme les deux plus hautes récompenses en statistiques (les _prix Nobel_
+de la statistique). Il correspond entre autres par sa limitation d'âge à la
+médaille Fields.
+
+Avec ce package tous les graphiques sont construits avec les mêmes briques.
+
+
+
+::::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ggplotR2
+library(ggplot2)
+
+capital|>ggplot(aes(x=bilan,y=fpc))+geom_point()
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="0.86em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: GgplotPython
+#| out.height: "150%"
+
+from plotnine import *
+
+g1=ggplot(capital,aes(x="bilan",y="fpc"))+geom_point()
+g1.show()
+
+```
+
+:::
+::::
+
+Sur cette partie de visualisation, nous allons travailler exclusivement
+avec R, comme ggplot est disponible dans les deux environnements. Commençons
+par analyser le lien entre l'activité (total bilan) et le capital.
+Le graphique prend en compte l'année. 
+
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ggplotR3
+
+library(lubridate)
+
+capital|>left_join(banque)|>
+  ggplot(aes(x=log(bilan),y=log(fpc),color=pays))+geom_point()+facet_wrap(~annee,scales="free")
+
+```
+:::
+::::
+
+Quel modèle derrière les données ? Le graphique ci-après montre qu'un
+modèle linéaire peut bien s'ajuster à ces données. 
+
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ggplotR4
+
+capital|>left_join(banque)|>
+  ggplot(aes(x=log(bilan),y=log(fpc)))+geom_point()+
+  geom_smooth(method=MASS::rlm,se=F)+
+  facet_grid(annee~pays,scales="free")
+
+```
+
+:::
+
+::::
+
+**ggplot** permet d'appliquer des thèmes prédéfinies. Par exemple,
+l'apparence d'Excel. Les thèmes sont fournies par le package **ggthemes**.    
+
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ggplotRThemes
+
+library(ggthemes)
+
+capital|>left_join(banque)|>
+  ggplot(aes(x=log(bilan),y=log(fpc)))+geom_point()+
+  geom_smooth(method=MASS::rlm,se=F)+
+  facet_grid(annee~pays,scales="free")+theme_excel()
+
+```
+:::
+::::
+
+Le code précédent a montré comment reproduire et obtenir plusieurs graphiques pour les combinaisons de variables qualitatives. Mais on peut regrouper des graphiques de nature différentes ne portant pas sur les mêmes données avec le package **patchwork**.
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ggplotRMultiplots
+
+library(patchwork)
+library(tidyverse)
+
+p1<-tab|>pivot_longer(cols=2:3)|>
+    ggplot(aes(x=pays,y=value,fill=name))+geom_col(position='dodge')+
+    coord_flip()
+
+p2<-tab|>ggplot(aes(x="",y=capital,fill=pays))+geom_col(width=1,stat="identity")+
+    coord_polar(theta="y")
+
+p1+p2 
+
+```
+:::
+::::
+
 
 
 
@@ -378,6 +548,9 @@ plt.show()
 
 :::
 ::::
+
+
+
 
 ## Références du chapitre
 

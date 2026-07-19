@@ -29,7 +29,7 @@ format:
 
 ## Brève introduction à ![](../Rlogo.png){height="1.2em" style="vertical-align: middle;"} et ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
-- Le langage R [@ihaka996 ] est une implémentation du langage **S**, développé par John Chambers. Ce langage a été primé par l'ACM avec cette ctation: 
+- Le langage R [@ihaka996 ] est une implémentation du langage **S**, développé par **John Chambers**. Ce langage a été primé par l'ACM avec cette citation : 
 
 ```{r}
 #| label: ACM
@@ -40,9 +40,9 @@ fortunes::fortune("ACM")|>print()
 ```
 
 
-- Le langage Python quant-à lui est apparu cinq ans plutôt en 1991, développé par **Guido van Rossum** aux Pays-Bas.Il est aujoud'hui le logiciel le plus utilisé pour l'IA. 
+- Le langage Python quant à lui est apparu cinq ans plus tôt en 1991, développé par **Guido van Rossum** aux Pays-Bas. Il est aujourd'hui le logiciel le plus utilisé pour l'IA. 
 
-- Ce deux logiciels, se distinguent par leur flexibilité et leur interactivité. En effet, les logiciels comme SAS et SPSS ont un modèle d'analyse différée. Avec ce modèle, soumet une tâche en fournissant des données et les instructions, le logiciel effectue les analyse et imprime les informations susceptibles d'intéresser l'utilisateur qui scrute ces resultats pour extraire ce qui l'interèsse, et est limité aux processus proposés par le logiciel. 
+- Ce deux logiciels, se distinguent par leur flexibilité et leur interactivité. En effet, les logiciels comme SAS et SPSS ont un modèle d'analyse différée. Avec ce modèle, soumet une tâche en fournissant des données et les instructions, le logiciel effectue les analyses et imprime les informations susceptibles d'intéresser l'utilisateur qui scrute ces résultats pour extraire ce qui l'intéresse, et est limité aux processus proposés par le logiciel. 
 
 - De l'autre côté, des langages performants comme C++ ou Java ne sont pas interactifs, car doivent être compilés, ce qui n'en fait pas outils de premier choix pour l'analyse des données.  
 
@@ -50,13 +50,13 @@ fortunes::fortune("ACM")|>print()
 
 ## Installation des outils 
 
-L'installation de R et Python se fait en général à partir des programme d'installation fournit par les sites oficiels des deux langages (www.r-project.org et www.python.org). Pour une utilisation lus efficace, il existe des outils plus performants notamment pour gestion des projets complexes (Rstudio, PyCharm, Positron, VS Code). Ces utils permettent de faire simulatenement les deux. Pour cette formation nous allons utiliser [Positron](https://positron.posit.co)  
+L'installation de R et Python se fait en général à partir des programmes d'installation fournit par les sites officiels des deux langages (www.r-project.org et www.python.org). Pour une utilisation plus efficace, il existe des outils plus performants notamment pour gestion des projets complexes (Rstudio, PyCharm, Positron, VS Code). Ces outils permettent de faire simultanément les deux. Pour cette formation, nous allons utiliser [Positron](https://positron.posit.co)  
 
-**La fin du copier-coller ?** Une autre force ces outils c'est de permettre la _recherche reproductible_. Traditionnellement, pour rediger un rapport d'analyse, on utilise un logicel de traitement de texte, on realise les calculs et les graphiquesailleurs et souventpar copier-coller,les resultats sont intégrés au rapport. Avec R et Python, il est assez aisé de générer des rapports dynamiques. C'est à ce stade qu'intervient [**Quarto**](https://quarto.org)  
+**La fin du copier-coller ?** Une autre force ces outils, c'est de permettre la _recherche reproductible_. Traditionnellement, pour rédiger un rapport d'analyse, on utilise un logiciel de traitement de texte, on réalise les calculs et les graphiques ailleurs et souvent par copier-coller, les résultats sont intégrés au rapport. Avec R et Python, il est assez aisé de générer des rapports dynamiques. C'est à ce stade qu'intervient [**Quarto**](https://quarto.org)  
 
-Les deux langages sont extnsibles avec une multitude de modules. Toutefois, les approches travail sont différentes. Avec R, vous chargez les modules donc vous avez besoin une fois qu'ils sont installés. C'est aussi le cas avec Python, mais avec option supplémentaires, **les environnements virtuels**. Un environnement est un espace de travail isolé qui contient sa propre installation de bibliothèque pour un projet donnée. Ils peuvent être crées avec un outil nommé **conda** ou l'outil par defaut **venv**. 
+Les deux langages sont extensibles avec une multitude de modules. Toutefois, les approches travail sont différentes. Avec R, vous chargez les modules donc vous avez besoin une fois qu'ils sont installés. C'est aussi le cas avec Python, mais avec une option supplémentaire, **les environnements virtuels**. Un environnement est un espace de travail isolé qui contient sa propre installation de bibliothèque pour un projet donnée. Ils peuvent être créés avec un outil nommé **conda** ou l'outil par défaut **venv**. 
 
-Sous windows le code ci-après permet de créer et d'actver un environnement virtuel ;
+Sous Windows le code ci-après permet de créer et d'activer un environnement virtuel ;
 
 
 ```bash
@@ -67,12 +67,12 @@ nom_environnement\Scripts\activate
 ```
 
 
-L'enviromment est alors créé dans le dossier où la commande création est appelée,et la seconde commande l'active. 
+L'environnement est alors créé dans le dossier dans lequel la commande création est appelée, et la seconde commande l'active. 
 
 ## Introduction au versionning : ![](../Git-Logo-1788C.png){height="1.2em" style="vertical-align: middle;"} 
 
 
-La gestion des versions sur un document ou un ensemble de fichiers et dossiers n'est pas évidente. Une des pratiquex reternue est de nommer le fichier différemment selon les modifications apprortées. Des logiciels comme MS World offrent un mode **suivi des modifications**. Cependant, ces approches sont inefficaces avec de nombreux risques lorsques les fichiers à gerer sont nombreux. Il n'y a pas par exemple ce suivi pour des fichiers pdf. La collaboration peut être délicate si de nomreuses personnes contribuent au projet. 
+La gestion des versions sur un document ou un ensemble de fichiers et dossiers n'est pas évidente. Une des pratiques retenue est de nommer le fichier différemment selon les modifications apportées. Des logiciels comme MS World offrent un mode **suivi des modifications**. Cependant, ces approches sont inefficaces avec de nombreux risques lorsque les fichiers à gérer sont nombreux. Il n'y a pas par exemple ce suivi pour des fichiers pdf. La collaboration peut être délicate si de nombreuses personnes contribuent au projet. 
 
 >**Sans Git**  
 >rapport_v0.docx 
@@ -88,13 +88,13 @@ Un logiciel de gestion de version comme **Git** permet de :
 - de suivre les modifications sur de nombreux fichiers de nature différente. 
 
 Vous pouvez travailler avec Git en local, ou mieux transférer vos données en ligne à travers des plateformes comme [**Github**](www.github.com),
- [**GitLab**](about.gitlab.com) ou encore  [**Bitbucket**](www.bitbucket.org). On peut travailler avec Git de plusieurs manières.  En obtenant le programme
- depuis le site officiel, vous aurez  un outil graphique et un outil de commande en ligne. La plupart des IDE (comme Positron) permette de travailler avec
+ [**GitLab**](about.gitlab.com) ou encore [**Bitbucket**](www.bitbucket.org). On peut travailler avec Git de plusieurs manières.  En obtenant le programme
+ depuis le site officiel, vous aurez un outil graphique et un outil de commande en ligne. La plupart des IDE (comme Positron) permette de travailler avec
  Git directement. Les participants qui n'ont pas de compte github vont commencer par en créer. 
 
 ### Concepts de base 
 
-**Dépôt (Repository)** : C'est le dossier contenant l'ensemble des fichiers du projet. Pour cette formation, le repo git aura la structure ci-dessous  :
+**Dépôt (Repository, repo)** : C'est le dossier contenant l'ensemble des fichiers du projet. Pour cette formation, le repo git aura la structure ci-dessous :
 
 ```text
 training/
@@ -132,7 +132,7 @@ git commit -m "Calcul du ratio CET1"
 
 **Historique**
 
-C'est la liste de tous les commits du projet. la syntaxe est :
+C'est la liste de tous les commits du projet. La syntaxe est :
 
 ````bash
     git log
@@ -209,12 +209,12 @@ print(resultat)
 ::::
 </div>
 
-On s'aperçoit de l'utilisation dans Python de la commande **import** pour accéder à certains fonctions. En fait, Python est langage universel pas destiné intialement aux statistiques, contrairement à R qui a un noyau de base avec l'essentiel des fonctions statistiques de base. En général les entreprises modélisent avec R, MATLAB, SAS, STATA, SPSS et développent les outils de mise en production avec C/C++, Java... Python règle le problème du double outillage permettant en même temps la modélisation et la mise en production.
+On s'aperçoit de l'utilisation dans Python de la commande **import** pour accéder à certaines fonctions. En fait, Python est langage universel pas destiné initialement aux statistiques, contrairement à R qui a un noyau de base avec l'essentiel des fonctions statistiques de base. En général les entreprises modélisent avec R, MATLAB, SAS, STATA, SPSS et développent les outils de mise en production avec C/C++, Java... Python règle le problème du double outillage permettant en même temps la modélisation et la mise en production.
 
-Un autre élément important est l'opérateur **pipeline**. Cet operateur sert à traiter la composition des fonctions. Si on veut calculer 
+Un autre élément important est l'opérateur **pipeline**. Cet opérateur sert à traiter la composition des fonctions. Si on veut calculer 
 $g \circ f \circ h \circ t(x)=g(f(h(t(x))))$, on court le risque d'ajouter ou omettre des parenthèses, et si les fonctions de la composition sont complexes, plusieurs instructions peuvent-être nécessaires, $$ v_1\leftarrow t(x), v_2\leftarrow h(v_1), v_3\leftarrow f(v_2), v_4\leftarrow f(v_3)$$ 
 
-Dans R, avec l'opérateur pipeline (**|>** package **base** ou **%>%** du package **magrittr**), permet le calcul en une seule instruction $$v_4 \leftarrow x |> t()|>h()|>f()|>g()$$ Avec Python, dispose d'une fonction **.pipe()** que verrons.
+Dans R, avec l'opérateur pipeline (**|>** package **base** ou **%>%** du package **magrittr**), permet le calcul en une seule instruction $$v_4 \leftarrow x |> t()|>h()|>f()|>g()$$ Avec Python, dispose d'une fonction **.pipe()** que nous verrons.
 
 <div><p style="font-size: 2em; color: blue;">Variables et stockage des données</p>
 
@@ -286,7 +286,7 @@ del wvec
 
 </div>
 
-Comme on peut le voir, les syntaxes sont assez proches. Le concept de **data frame** est commun aux deux langages. C'est le tableau de données statistiques. Avec R,le package **dplyr** est fondamental pour la manipulation des data frame, comme l'est **panda** avec Python. 
+Comme on peut le voir, les syntaxes sont assez proches. Le concept de **data frame** est commun aux deux langages. C'est le tableau de données statistiques. Avec R, le package **dplyr** est fondamental pour la manipulation des data frame, comme l'est **panda** avec Python. 
 
 Dans les deux langages les fonctions sont stockées comme objets de type **closure** et manipulables comme des objets classiques. Une fonction peut ainsi être passée en paramètre à une autre fonction. 
 
@@ -349,7 +349,7 @@ print(t_stat(z, 1))
 
 </div>
 
-Les fonctions sont fondamentales avec ces deux langages car permettent une très grande flexibilité. Avec R, Elles sont définies avec le mot clé **function** suivie de la liste des arguments et du corps de la fonction entre deux accolades. Avec Python, la fonction est définie avec **def**.
+Les fonctions sont importantes avec ces deux langages, car permettent une très grande flexibilité. Avec R, elles sont définies avec le mot clé **function** suivie de la liste des arguments et du corps de la fonction entre deux accolades. Avec Python, la fonction est définie avec **def**.
 
 Un autre aspect important est le calcul itératif. Nous allons illustrer avec le calcul d'une valeur approximative de $\pi$ par **Monte Carlo**. 
 
@@ -449,7 +449,7 @@ print(df)
 
 ### Premier document .qmd
 
-Un document comprend deux parties: l'en-tête **YAML(Yet Another Markup Language)** et le contenu rédactionnel qui contient le texte en **Markdown** et les blocs de code. Voici un exemple d'en-tête.
+Un document comprend deux parties : l'en-tête **YAML(Yet Another Markup Language)** et le contenu rédactionnel qui contient le texte en **Markdown** et les blocs de code. Voici un exemple d'en-tête.
 
 ````yaml
 ---
@@ -468,7 +468,9 @@ format:
 
 ````
 
-Avant de produire des pdf, un générateur de PDF doit-être installé (MikTeX ou TeXLive) mais Quarto peut utiliser un générateur léger **TinyTeX**. Après avoir installé quarto, l'installation de TinyTeX se fait avec la commande: 
+> Copiez ce fragment dans le fichier *index.qmd* du **repo training** 
+
+Avant de produire des pdf, un générateur de PDF doit-être installé (MikTeX ou TeXLive) mais Quarto peut utiliser un générateur léger **TinyTeX**. Après avoir installé quarto, l'installation de TinyTeX se fait avec la commande : 
 
 
 ```bash
@@ -476,7 +478,6 @@ Avant de produire des pdf, un générateur de PDF doit-être installé (MikTeX o
 
 quarto install tinytex
 ```
-
 
 
 Le document va être ensuite structuré en sections, sous-sections, des références bibliographiques, du code pour les calculs, graphiques.  
@@ -512,32 +513,36 @@ $$K^d = F(r,Y,A)$$ $A$ est la technologie. La figure ci-après montre le lien en
 
 ````
 
+> Copiez ce bloc et complétez le fichier index.qmd. 
+
 Pour compiler le document, deux options sont disponibles, utiliser Quarto en ligne de commande 
 
 ````bash
-quarto render fichier.qmd
+quarto render index.qmd
 ````
 ou utiliser le package quarto de R.
 
 ````r
-quarto_render("fichier.qmd")
+quarto_render("index.qmd")
 ````
+
+>Ne pas oublier de faire _add, commit, push_ avec Git à chaque mise à jour importante. 
 
 ## Introduction à SQL 
 
 ### Le concept de base de données 
 
-@codd1970 a introduit le concept de bases de données relationnelles . Il a fournit un modèle permettant de structurer et de gérer efficacement de grandes quantités de données en utilisant des tables liées par des relations. Son approche a révolutionné le stockage et l’extraction des informations, facilitant l’analyse de données à grande échelle et posant les bases des systèmes de gestion de bases de données modernes (SGBD).
+@codd1970 a introduit le concept de bases de données relationnelles. Il a fourni un modèle permettant de structurer et de gérer efficacement de grandes quantités de données en utilisant des tables liées par des relations. Son approche a révolutionné le stockage et l’extraction des informations, facilitant l’analyse de données à grande échelle et posant les bases des systèmes de gestion de bases de données modernes (SGBD).
 
 Une base de données est un ensemble de données organisées en **tables (ou relations)** liées entre elles par des identifiants communs. L'utilisateur ne souci pas de la manière dont sont stockées les informations, c'est le SGBR qui s'en charge.
 
 :::{.notes}
-Avec Excel, toute l'information est stockèe dans un seul fichier. 
+Avec Excel, toute les informations sont stockées dans un seul fichier. 
 :::
 
-Les concepts suivant sont fondamentaux :
+Les concepts suivants sont fondamentaux :
 
-- **Table (ou relation)** : reprèsente une entité avec ses informations (banque, prêt, transfert);
+- **Table (ou relation)** : représente une entité avec ses informations (banque, prêt, transfert);
 - **Ligne (Tuple, enregistrement)** : occurence d'une entité
 - **Colonne (Attribut)** : Une caractéristique spécifique de l'entité (ex: Nom, Date_de_naissance, Montant_du_credit).
 - **Clé Primaire (Primary Key)** : L'identifiant unique d'une ligne dans une table (ex: Id_Client). Elle garantit qu'aucune ligne ne peut être confondue avec une autre.
@@ -568,7 +573,7 @@ Ce langage permet d'interagir avec une base de données realtionnelle. Il est tr
 
 ```
 
-Le langage SQL est normé (**ISO/IEC 9075**). En pratique, les éditeurs de logiciel de base de données (SGBDR) ajoutent  leurs propres fonctionnalités propriétaires, appelées **dialectes** (comme le PL/SQL chez Oracle ou le Transact-SQL chez Microsoft). Il existe une multitude de SGBDR. Les principaux sont : PostgreSQL, Oracle, MySQL, MS SQL Sever. Pour des utilisateurs à faible echelle SQLite, Microsoft Access. Il existe aussi des solutions cloud comme **BigQuery** de Google.
+Le langage SQL est normé (**ISO/IEC 9075**). En pratique, les éditeurs de logiciel de base de données (SGBDR) ajoutent leurs propres fonctionnalités propriétaires, appelées **dialectes** (comme le PL/SQL chez Oracle ou le Transact-SQL chez Microsoft). Il existe une multitude de SGBDR. Les principaux sont : PostgreSQL, Oracle, MySQL, MS SQL Sever. Pour des utilisateurs à faible échelle SQLite, Microsoft Access. Il existe aussi des solutions cloud comme **BigQuery** de Google.
 
 La bonne nouvelle est que SQL peut-être utiliser entièrement depuis R et Python pour la plupart des SGBDR. Dans R, il existe des packages pour la plupart des SGBDR : **ROracle, RPostgres, RMySQL, RODBC, RSQLite** avec Python les modules **psycopg2, mysql-connector-python, sqlite3**. Nous allons illustrer les concepts SQL avec SQLite, qui est intégré à R et Python. Nous traiterons du LDD et du LMD.
 
@@ -784,7 +789,7 @@ HAVING <condition>
 ORDER BY <expression>;
 ````
 
-Cette commande lire les informations d'une ou plusieurs tables. Nous allons illustrer par des exemples. Les commandes peuvent lancées en utilisant **Positron** ou depuis R ou Python. 
+Cette commande lire les informations d'une ou plusieurs tables. Nous allons illustrer par des exemples. Les commandes peuvent être lancées en utilisant **Positron** ou depuis R ou Python. 
 
 
 
@@ -873,7 +878,7 @@ print(capital.head())
 
 ::::
 
-La commande **SELECT** ne se limite pas à afficher les données, elle permet d'obtenir des résumés (Moyenne,Max, Min, Somme...) sur l'ensemble de la table ou par groupe. Nous allons voir ce volet analytique. 
+La commande **SELECT** ne se limite pas à afficher les données, elle permet d'obtenir des résumés (Moyenne, Maximum, Minimum, Somme...) sur l'ensemble de la table ou par groupe. Nous allons voir ce volet analytique. 
 
 
 
@@ -927,11 +932,11 @@ print(capital.head())
 
 ::::
 
-Dans une BDD, toutes les infirmations ne sont pas stockées dans une seule table. ces bases peuvent avoir des dizaines, voir des milliers de tables liées entre elles. la BDD que nous avons créée est affichée ci-après :
+Dans une BDD, toutes les infirmations ne sont pas stockées dans une seule table. Ces bases peuvent avoir des dizaines, voir des milliers de tables liées entre elles. La BDD que nous avons créée est affichée ci-après :
 
 ![](../dbBCC.png)
 
-Supporsons que l'on souhaite calculer le ratio **NPL non provisionnées sur fonds propres** c'est un des indicateur de stablité financière du FMI. Les informations se trouvent dans deux tables. Il faut alors recourir au mecanisme de **jointure** de SQL. Les jointures se font sur un certains nombres de champs. 
+Supposons que l'on souhaite calculer le ratio **NPL non provisionnés sur fonds propres**, c'est un des indicateurs de stabilité financière du FMI. Les informations se trouvent dans deux tables. Il faut alors recourir au mécanisme de **jointure** de SQL. Les jointures se font sur un certain nombre de champs. 
 
 ```{r}
 #| label: tabjoin

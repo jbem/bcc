@@ -46,7 +46,7 @@ Sys.setlocale("LC_ALL","fr_FR.utf8")
 
  @laffonttirole1993, affirmaient que la régulation faisait face à trois contraintes majeures, les contraintes informationnelles, Les contraintes transactionnelles et les contraintes politiques. 
 
-Beaucoup d'efforts ont été faits par les régulateurs et superviseurs pour réduire les contraintes informationnelles et les progrès en informatique y ont beaucoup contribué. Les données sont même devenues abondantes dans la quasi-totalité des secteurs d'actvité. Toutefois, comme l'a dit le mathématicien Clive Humby, **les données sont le noveau pétrole, mais l'analyse est le moteur**.  
+Beaucoup d'efforts ont été faits par les régulateurs et superviseurs pour réduire les contraintes informationnelles et les progrès en informatique y ont beaucoup contribué. Les données sont même devenues abondantes dans la quasi-totalité des secteurs d'actvité. Toutefois, comme l'a dit le mathématicien Clive Humby, **les données sont le nouveau pétrole, mais l'analyse est le moteur**.  
 
 Dans ce contexte, la science des données (**Data Science**) offre un ensemble de méthodes statistiques, économétriques et d'apprentissage automatique permettant de valoriser les données disponibles afin d'améliorer les capacités d'analyse, de prévision et de gestion des risques. Les langages R et Python se sont imposés comme les standards internationaux pour le traitement des données, la modélisation statistique, la visualisation et le développement d'outils d'aide à la décision.
 
