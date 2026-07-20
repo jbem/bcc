@@ -45,7 +45,7 @@ Les données importées ne sont pas toujours immédiatement exploitables. Les pr
 
 ### Analyse ou de compréhension 
 
-Elle comprend la transformation des données, la visualisation et la modélisation. Cette phase est souvent réalisée de manière itérative. On ne tombe pas touours sur le _meilleur modèle_ au premier coup. 
+Elle comprend la transformation des données, la visualisation et la modélisation. Cette phase est habituellement réalisée de manière itérative. On ne tombe pas toujours sur le _meilleur modèle_ au premier coup. 
 
 ### Communication 
 
@@ -375,8 +375,7 @@ plt.pie(tab['capital'],labels=tab['pays'])
 
 Comme on peut le constater, chaque type de graphique dispose de sa commande
 spécifique _plot, pie, barplot..._. @wickham2016 implémente une grammaire graphique
-pour R. Il est lauréat du prix **COPSS[^1] (Comité des présidents de sociétés statistiques,
-Committee of Presidents of Statistical Societies)**    
+pour R. Il est lauréat du prix **COPSS[^1] (Comité des présidents de sociétés statistiques, Committee of Presidents of Statistical Societies)**    
 
 [^1]: une distinction remise chaque année par le Comité des présidents des sociétés statistiques à une personne âgée de moins de 41 ans, en reconnaissance de ses contributions exceptionnelles à la profession de statistiques.
 Le prix COPSS, avec le Prix international de statistiques, sont considérés
@@ -385,8 +384,6 @@ de la statistique). Il correspond entre autres par sa limitation d'âge à la
 médaille Fields.
 
 Avec ce package tous les graphiques sont construits avec les mêmes briques.
-
-
 
 ::::{.columns}
 
@@ -470,8 +467,8 @@ capital|>left_join(banque)|>
 
 ::::
 
-**ggplot** permet d'appliquer des thèmes prédéfinies. Par exemple,
-l'apparence d'Excel. Les thèmes sont fournies par le package **ggthemes**.    
+**ggplot** permet d'appliquer des thèmes prédéfinis. Par exemple,
+l'apparence d'Excel. Les thèmes sont fournis par le package **ggthemes**.    
 
 
 ::::{.columns}
@@ -507,20 +504,196 @@ Le code précédent a montré comment reproduire et obtenir plusieurs graphiques
 
 library(patchwork)
 library(tidyverse)
+library(formattable)
+library(ggrepel)
 
 p1<-tab|>pivot_longer(cols=2:3)|>
-    ggplot(aes(x=pays,y=value,fill=name))+geom_col(position='dodge')+
-    coord_flip()
+    ggplot(aes(x=pays,y=value/1e6,fill=name))+geom_col(position='dodge')+
+    coord_flip()+theme_gdocs()+xlab("")+ylab("")+
+    theme(legend.title=element_blank(),legend.position="bottom",
+    legend.direction="horizontal")
 
-p2<-tab|>ggplot(aes(x="",y=capital,fill=pays))+geom_col(width=1,stat="identity")+
-    coord_polar(theta="y")
-
+p2<-tab|>arrange(desc(pays))|>
+       mutate(prop=percent(capital/sum(capital),0),
+               centre=cumsum(capital)-capital/2)|>
+ggplot(aes(x="",y=capital,fill=pays))+
+    geom_bar(width=1,stat="identity",color='white')+
+    coord_polar(theta="y",start=0)+
+    geom_label_repel(aes(y=centre,label=prop),color="white",size=5,
+                    show.legend=F,nudge_x=1)+
+    theme_void()+
+    theme(legend.title=element_blank())
+    
 p1+p2 
 
 ```
 :::
 ::::
 
+### Animation et cartographie
+
+Nous avons au début construit un nuage de point des variables capital
+et bilan, sans tenir compte du pays et l'année. On parle souvent de
+modèle empilé **pooled model**. Avec les **facets** de ggplot, on a
+essayé de prendre en compte les autres dimensions. Les animations fournies
+par le package **gganimate** offrent une autre possibilité pour examiner
+les données hiérarchiques.
+
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ggAnimate
+#| eval: false
+
+library(gganimate)
+
+p<-capital|>mutate(date=make_date(annee,mois,10))|>
+   left_join(banque)|>
+   ggplot(aes(x=bilan/1000,y=fpc/1000))+
+   geom_point(aes(size=bilan/1000))+
+   geom_smooth(method=MASS::rlm,se=F)+
+   facet_wrap(~pays,scales="free")+
+   theme_gdocs()+
+   labs(
+    title="Activité vs capital",
+    subtitle="Periode : {frame_time}",
+    x="Total bilan",
+    y="Fonds propres comptables",
+    size="Total bilan"
+   )
+
+animation<-p+transition_time(date)+ease_aes('linear')
+
+animate(
+  animation,
+  nframes=36,
+  fps=1,
+  renderer=gifski_renderer("anim.gif")
+)
+
+```
+
+:::
+
+::::
+
+![](anim.gif)
+
+La cartographie consiste à afficher les données sur une carte géographique.
+De nombreux packages R excellent dans ce domaine, jadis dominé par **ArcGIS**.
+Une carte géographique peut être représentée par un ensemble de données numériques.
+Deux packages **sf** et **leaflet** vont servir à illustrer.
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ggplotRSF
+
+library(geodata)
+library(sf)
+
+if(!file.exists("../maps/gadm/gadm41_COD_1_pk.rds")){
+rdc<-gadm("COD",level=1,path="../maps")|>st_as_sf()
+}else{
+  rdc<-readRDS("../maps/gadm/gadm41_COD_1_pk.rds")|>
+  terra::unwrap()|>st_as_sf()
+}
+
+head(rdc)
+
+ggplot(rdc)+geom_sf()
+
+agences <- data.frame(
+  NAME_1 = c(
+    "Kinshasa", "Haut-Katanga", "Kongo-Central", "Nord-Kivu", "Lualaba", 
+    "Sud-Kivu", "Ituri", "Tshopo", "Haut-Uele", "Kasaï-Oriental", 
+    "Kasaï-Central", "Kwilu", "Équateur", "Maniema", "Tanganyika", 
+    "Lomami", "Sud-Ubangi", "Kasaï", "Kwango", "Bas-Uele", 
+    "Nord-Ubangi", "Mongala", "Sankuru", "Mai-Ndombe", "Haut-Lomami", "Tshuapa"
+  ),
+  agences = c(184, 70, 57, 32, 24, 18, 12, 10, 6, 6, 5, 4, 3, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0),
+  Couverture = factor(c(
+    "Concentration critique", "Couverture élevée", "Couverture élevée", "Couverture moyenne", "Couverture moyenne",
+    "Couverture modérée", "Couverture faible", "Couverture faible", "Couverture faible", "Couverture faible",
+    "Couverture faible", "Couverture critique", "Couverture critique", "Couverture critique", "Couverture critique",
+    "Couverture critique", "Couverture critique", "Couverture critique", "Couverture critique", "Couverture critique",
+    "Couverture critique", "Zone blanche", "Zone blanche", "Zone blanche", "Zone blanche", "Zone blanche"
+  ), 
+  # On ordonne les catégories pour que la légende soit logique du plus fort au plus faible
+  levels = c("Concentration critique", "Couverture élevée", "Couverture moyenne", "Couverture modérée", "Couverture faible", "Couverture critique", "Zone blanche"))
+)
+
+rdc|>left_join(agences)|>
+  ggplot()+geom_sf(aes(fill=agences),color="white",size=0.2)+
+  geom_sf_label(aes(label = NAME_1), size = 2, alpha = 0.7)+
+  theme_minimal()
+
+```
+:::
+::::
+
+Maintenant regardons l'interactivite avec **leaflet** 
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: ggplotRLeaflet
+
+library(leaflet)
+
+
+if(!file.exists("../maps/gadm/gadm41_COD_1_pk.rds")){
+rdc<-gadm("COD",level=1,path="../maps")|>st_as_sf()
+}else{
+  rdc<-readRDS("../maps/gadm/gadm41_COD_1_pk.rds")|>
+  terra::unwrap()|>st_as_sf()
+}
+
+pal <- colorNumeric(
+    palette = "Blues",
+    domain = agences$agences
+)
+
+centres<-st_centroid(rdc|>left_join(agences))
+
+rdc|>left_join(agences)|>mutate(long=st_coordinates(centres)[,1],
+    lat=st_coordinates(centres)[,2])|>
+   leaflet()|>
+    addTiles()|>
+    addMarkers(
+        data=centres,
+        popup=~paste(NAME_1,":",agences)
+    )|>
+    addCircles(
+      lng=~long,lat=~lat,
+      weight=1,
+      radius=~sqrt(agences)*5000,
+      color=~pal(agences),
+      fillOpacity=0.9
+    )|>
+    addPolygons()|>
+    addLegend(
+        pal = pal,
+        values = ~agences,
+        title = "Agences de banque"
+    )
+   
+```
+:::
+::::
 
 
 

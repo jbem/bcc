@@ -46,7 +46,7 @@ Sys.setlocale("LC_ALL","fr_FR.utf8")
 
  @laffonttirole1993, affirmaient que la régulation faisait face à trois contraintes majeures, les contraintes informationnelles, Les contraintes transactionnelles et les contraintes politiques. 
 
-Beaucoup d'efforts ont été faits par les régulateurs et superviseurs pour réduire les contraintes informationnelles et les progrès en informatique y ont beaucoup contribué. Les données sont même devenues abondantes dans la quasi-totalité des secteurs d'actvité. Toutefois, comme l'a dit le mathématicien Clive Humby, **les données sont le nouveau pétrole, mais l'analyse est le moteur**.  
+Beaucoup d'efforts ont été faits par les régulateurs et superviseurs pour réduire les contraintes informationnelles et les progrès en informatique y ont beaucoup contribué. Les données sont même devenues abondantes dans la quasi-totalité des secteurs d'actvité. Toutefois, comme l'a dit le mathématicien **Clive Humby**, **les données sont le nouveau pétrole, mais l'analyse est le moteur**.  
 
 Dans ce contexte, la science des données (**Data Science**) offre un ensemble de méthodes statistiques, économétriques et d'apprentissage automatique permettant de valoriser les données disponibles afin d'améliorer les capacités d'analyse, de prévision et de gestion des risques. Les langages R et Python se sont imposés comme les standards internationaux pour le traitement des données, la modélisation statistique, la visualisation et le développement d'outils d'aide à la décision.
 
@@ -66,19 +66,19 @@ De manière spécifique, il s'agira de :
 
 * **[Jour 1 :  Environnement de travail & fondamentaux du traitement des données](j1.qmd)**
   * Installation, syntaxe de base R et Python, introduction à SQL, Quarto et Git
-* **[Jour 2 : Exploration des données et introductin à Shiny](j2.qmd)**
+* **[Jour 2 : Exploration des données et introduction à Shiny](j2.qmd)**
   * Analyse exploratoire des données, représentations graphiques, Shiny.
 * **[Jour 3 : Scénarios macroéconomiques & modélisation des NPL](j3.qmd)**
   * Introduction aux stress tests et à la modélisation. 
-* **[Jour 4 : Realisation d'un stress test de bout en bout](j4.qmd)**
+* **[Jour 4 : Réalisation d'un stress test de bout en bout](j4.qmd)**
   * Mettre en oeuvre toutes les étapes d'un stress test de solvabilité
 * **[Jour 5 : Cas pratique](j5.qmd)**
-  * Traval en équipe, restitution.
+  * Travail en équipe, restitution.
 
 
 ## 📚 Documentation recommandée
 
-Il existe une abondante litterature sur le sujet,il est particulierement recommandé 
+Il existe une abondante littérature sur le sujet, il est particulièrement recommandé 
 @r4ds 
 
 ## Références du chapitre
