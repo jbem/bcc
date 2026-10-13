@@ -29,7 +29,7 @@ format:
 
 ## Brève introduction à ![](../Rlogo.png){height="1.2em" style="vertical-align: middle;"} et ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
-- Le langage R [@ihaka996 ] est une implémentation du langage **S**, développé par **John Chambers**. Ce langage a été primé par l'ACM avec cette citation : 
+- Le langage R [@ihaka996 ] est une implémentation du langage **S**, développé par **John Chambers**. Ce langage a été primé par l'ACM avec cette citation  
 
 ```{r}
 #| label: ACM
@@ -74,11 +74,12 @@ L'environnement est alors créé dans le dossier dans lequel la commande créati
 
 La gestion des versions sur un document ou un ensemble de fichiers et dossiers n'est pas évidente. Une des pratiques retenue est de nommer le fichier différemment selon les modifications apportées. Des logiciels comme MS World offrent un mode **suivi des modifications**. Cependant, ces approches sont inefficaces avec de nombreux risques lorsque les fichiers à gérer sont nombreux. Il n'y a pas par exemple ce suivi pour des fichiers pdf. La collaboration peut être délicate si de nombreuses personnes contribuent au projet. 
 
+
 >**Sans Git**  
->rapport_v0.docx 
->rapport_v1.docx 
->rapport_v1_reluDG.docx 
->rapport_final.docx 
+    >rapport_v0.docx 
+    >rapport_v1.docx 
+    >rapport_v1_reluDG.docx 
+    >rapport_final.docx 
 
 Un logiciel de gestion de version comme **Git** permet de :
 
@@ -169,7 +170,7 @@ Pour terminer,
 <div><p style="font-size: 2em; color: blue;">Quelques commandes</p>
 ::::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
 
 ```{r}
@@ -185,7 +186,7 @@ m/sqrt(v)
 
 :::
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
 ```{python}
@@ -220,7 +221,7 @@ Dans R, avec l'opérateur pipeline (**|>** package **base** ou **%>%** du packag
 
 :::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ###  ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
 
 ```{r}
@@ -249,7 +250,7 @@ rm(xsec,yvec,wvec) #Suppression de variable
 
 :::
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
 ```{python}
@@ -293,7 +294,7 @@ Dans les deux langages les fonctions sont stockées comme objets de type **closu
 <div><p style="font-size: 2em; color: blue;">Les fonctions</p>
 :::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
 
 ```{r}
@@ -316,7 +317,7 @@ t.stat(z);t.stat(z,1)
 
 :::
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
 ```{python}
@@ -378,7 +379,7 @@ Pour estimer $\pi$ on simule $N$ points du carré, et fait le rapport en le nomb
 
 :::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
 
 ```{r}
@@ -411,7 +412,7 @@ head(df)
 
 :::
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
 ```{python}
@@ -581,7 +582,7 @@ La bonne nouvelle est que SQL peut-être utiliser entièrement depuis R et Pytho
 
 :::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
 
 ```{r}
@@ -652,7 +653,7 @@ con<-dbConnect(SQLite(),"../dbBCC.db",extended_type=TRUE)  # Objet de connexion 
 
 :::
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
 ```{python}
@@ -715,7 +716,7 @@ La création des tables peut être déléguée à R ou Python avec les fonctions
 
 :::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
 
 ```{r}
@@ -733,7 +734,7 @@ if (n==0){
 
 :::
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
 ```{python}
@@ -795,7 +796,7 @@ Cette commande lire les informations d'une ou plusieurs tables. Nous allons illu
 
 :::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
 
 ```{r}
@@ -825,7 +826,7 @@ where id_pays=1"|>
 
 :::
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
 ```{python}
@@ -884,7 +885,7 @@ La commande **SELECT** ne se limite pas à afficher les données, elle permet d'
 
 :::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
 
 ```{r}
@@ -910,7 +911,7 @@ La commande **SELECT** ne se limite pas à afficher les données, elle permet d'
 
 :::
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
 ```{python}
@@ -956,7 +957,7 @@ L'option **LEFT JOIN** est la plus utilisée en exploration ou consultation d'un
 
 :::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
 
 ```{r}
@@ -975,7 +976,7 @@ group by c.annee, c.mois, pays"|>dbGetQuery(con, statement=_)|>head()
 
 :::
 
-:::{.column width="50%"}
+:::{.column width="100%"}
 ### ![](../python-logo-master-v3-TM.png){height="1.2em" style="vertical-align: middle;"}
 
 ```{python}

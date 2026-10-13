@@ -24,7 +24,8 @@ format:
     smaller: true
     logo: ../logo.png
     css: ../custom.css
-    
+filters:
+  - shinylive
 ---
 
 ## Programme de la journée
@@ -278,18 +279,7 @@ Dans cette partie, nous allons utiliser les données métiers enregistrées dans
 
 :::
 
-@wilkinson05 propose une vision révolutionnaire de la visualisation des
-données : un graphique n'est pas un objet spécifique (histogramme, nuage de
-points, boîte à moustaches), mais la combinaison systématique de composants
-élémentaires tels que les données, les variables esthétiques (position,
-couleur, taille, forme), les transformations statistiques, les systèmes
-de coordonnées et les facettes. Cette **grammaire** permet de construire
-pratiquement n'importe quel graphique complexe à partir d'un petit nombre
-de règles générales, de la même manière qu'une langue permet de produire
-une infinité de phrases à partir de règles grammaticales. Cette approche
-a profondément influencé la visualisation moderne et constitue le fondement
-théorique de bibliothèques comme **ggplot2** en R et, plus indirectement,
-de nombreux outils de visualisation contemporains.
+@wilkinson05 propose une vision révolutionnaire de la visualisation des données : un graphique n'est pas un objet spécifique (histogramme, nuage de points, boîte à moustaches), mais la combinaison systématique de composants élémentaires tels que les données, les variables esthétiques (position, couleur, taille, forme), les transformations statistiques, les systèmes de coordonnées et les facettes. Cette **grammaire** permet de construire pratiquement n'importe quel graphique complexe à partir d'un petit nombre de règles générales, de la même manière qu'une langue permet de produire une infinité de phrases à partir de règles grammaticales. Cette approche a profondément influencé la visualisation moderne et constitue le fondement théorique de bibliothèques comme **ggplot2** en R et, plus indirectement, de nombreux outils de visualisation contemporains. 
 
 >**ggplot** est disponible aussi bien en R et Python.
 
@@ -373,15 +363,10 @@ plt.pie(tab['capital'],labels=tab['pays'])
 :::
 ::::
 
-Comme on peut le constater, chaque type de graphique dispose de sa commande
-spécifique _plot, pie, barplot..._. @wickham2016 implémente une grammaire graphique
-pour R. Il est lauréat du prix **COPSS[^1] (Comité des présidents de sociétés statistiques, Committee of Presidents of Statistical Societies)**    
+Comme on peut le constater, chaque type de graphique dispose de sa commande spécifique _plot, pie, barplot..._. @wickham2016 implémente une grammaire graphique pour R. Il est lauréat du prix **COPSS[^1] (Comité des présidents de sociétés statistiques, Committee of Presidents of Statistical Societies)**    
 
 [^1]: une distinction remise chaque année par le Comité des présidents des sociétés statistiques à une personne âgée de moins de 41 ans, en reconnaissance de ses contributions exceptionnelles à la profession de statistiques.
-Le prix COPSS, avec le Prix international de statistiques, sont considérés
-comme les deux plus hautes récompenses en statistiques (les _prix Nobel_
-de la statistique). Il correspond entre autres par sa limitation d'âge à la
-médaille Fields.
+Le prix COPSS, avec le Prix international de statistiques, sont considérés comme les deux plus hautes récompenses en statistiques (les _prix Nobel_ de la statistique). Il correspond entre autres par sa limitation d'âge à la médaille Fields.
 
 Avec ce package tous les graphiques sont construits avec les mêmes briques.
 
@@ -419,10 +404,7 @@ g1.show()
 :::
 ::::
 
-Sur cette partie de visualisation, nous allons travailler exclusivement
-avec R, comme ggplot est disponible dans les deux environnements. Commençons
-par analyser le lien entre l'activité (total bilan) et le capital.
-Le graphique prend en compte l'année. 
+Sur cette partie de visualisation, nous allons travailler exclusivement avec R, comme ggplot est disponible dans les deux environnements. Commençons par analyser le lien entre l'activité (total bilan) et le capital. Le graphique prend en compte l'année. 
 
 
 ::::{.columns}
@@ -443,8 +425,7 @@ capital|>left_join(banque)|>
 :::
 ::::
 
-Quel modèle derrière les données ? Le graphique ci-après montre qu'un
-modèle linéaire peut bien s'ajuster à ces données. 
+Quel modèle derrière les données ? Le graphique ci-après montre qu'un modèle linéaire peut bien s'ajuster à ces données. 
 
 
 ::::{.columns}
@@ -532,12 +513,7 @@ p1+p2
 
 ### Animation et cartographie
 
-Nous avons au début construit un nuage de point des variables capital
-et bilan, sans tenir compte du pays et l'année. On parle souvent de
-modèle empilé **pooled model**. Avec les **facets** de ggplot, on a
-essayé de prendre en compte les autres dimensions. Les animations fournies
-par le package **gganimate** offrent une autre possibilité pour examiner
-les données hiérarchiques.
+Nous avons au début construit un nuage de point des variables capital et bilan, sans tenir compte du pays et l'année. On parle souvent de modèle empilé **pooled model**. Avec les **facets** de ggplot, on a essayé de prendre en compte les autres dimensions. Les animations fournies par le package **gganimate** offrent une autre possibilité pour examiner les données hiérarchiques.
 
 
 ::::{.columns}
@@ -584,10 +560,7 @@ animate(
 
 ![](anim.gif)
 
-La cartographie consiste à afficher les données sur une carte géographique.
-De nombreux packages R excellent dans ce domaine, jadis dominé par **ArcGIS**.
-Une carte géographique peut être représentée par un ensemble de données numériques.
-Deux packages **sf** et **leaflet** vont servir à illustrer.
+La cartographie consiste à afficher les données sur une carte géographique. De nombreux packages R excellent dans ce domaine, jadis dominé par **ArcGIS**. Une carte géographique peut être représentée par un ensemble de données numériques. Deux packages **sf** et **leaflet** vont servir à illustrer.
 
 ::::{.columns}
 
@@ -695,6 +668,183 @@ rdc|>left_join(agences)|>mutate(long=st_coordinates(centres)[,1],
 :::
 ::::
 
+## Les tableaux statistiques
+
+### Les outils R et Python
+
+Les tableaux consitituent la forme restitution des données d'une analyse. Avec R, de nombreux packages existent pour présenter les données sous forme de tableau. Ils sont présentés ci-dessous. Cette liste n'est pas exhaustive.
+
+```{r}
+#| echo: false
+#| label: tabPackage
+library(gt)
+
+tibble(
+  packages=c('xtable','tables','kable, kableExtra','gt, gtsummary, huxtable','flextable','stargazer','sjPlot','modelsummary','texreg'),
+  tab=c('✅','✅','✅','✅','✅','✅','✅','✅',''),
+  reg=c('✅','','','','✅','✅','✅','✅','✅'),
+  tex=c('✅','✅','✅','✅','✅','✅','✅','✅','✅'),
+  doc=c('','','✅','✅','✅','','','✅','✅'),
+  htm=c('✅','✅','✅','✅','✅','✅','✅','✅','✅')
+)|>gt()|>tab_options(
+  table.font.size=px(22), table.align='center'
+)|>cols_align(
+  align='center',columns = everything()
+)|>cols_label(
+  packages="Package",
+  tab="Classique",
+  reg="Regression",
+  tex="LaTeX",
+  doc="MS Office",
+  htm="HTML"
+)|>tab_spanner(label="Type de sortie", columns=c(tab,reg))|>tab_spanner(label="Format de sortie",columns=c(tex,doc,htm))
+
+```
+
+Avec Python, la librarie **great_tables** est la reprise du package R **gt**
+ pour produire des tableaux.
+
+
+### Les statistiques descriptives
+
+Deux options sont envisageables. La première consiste à produire soi-même les indicateurs à présenter et la seconde à utiliser les packages qui fournissent un résumé en fonction de la nature des données. Cette dernière approche estassez similaire aux logiciels comme SPSS.
+
+Dans le code ci-après, nous produisons le tableau de données et l'affichons dans le rapport avec le package **gt**. Ce package symboliquement signifie **grammar of table**, à l'image de la **grammar of graphic** qui a inspiré ggplot.   
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: tabstat1R
+
+tab<-capital|>left_join(banque)|>filter(mois==12)|>group_by(annee,pays)|>
+    summarise(tfpc=sum(fpc),mfpc=mean(fpc),tbilan=sum(bilan),mbilan=mean(bilan))|>
+    bind_rows(
+       capital|>left_join(banque)|>filter(mois==12)|>group_by(annee)|>
+       summarise(tfpc=sum(fpc),mfpc=mean(fpc),tbilan=sum(bilan),mbilan=mean(bilan))|>
+       mutate(pays="Zone CEMAC")
+    )|>arrange(annee,pays)
+
+tab|>gt()|>cols_label(
+ annee="Année", 
+ pays="Pays",
+ tfpc="Total",
+ mfpc="Moyenne",
+ tbilan="Total",
+ mbilan="Moyenne" 
+)|>tab_spanner(label="Fonds propres",columns=ends_with("fpc"))|>
+   tab_spanner(label="Total bilan",columns=ends_with("bilan"))
+    
+
+```
+
+:::
+
+:::{.column width="100%"}
+### ![](../python-logo-master-v3-TM.png){height="0.86em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: tabstat1Python
+from great_tables import GT
+
+tab=r.tab
+fpc_cols = [c for c in tab.columns if c.endswith("fpc")]
+bilan_cols = [c for c in tab.columns if c.endswith("bilan")]
+
+gt_tab = (
+    GT(tab, groupname_col="annee")
+    .cols_label(
+        annee="Année",
+        pays="Pays",
+        tfpc="Total",
+        mfpc="Moyenne",
+        tbilan="Total",
+        mbilan="Moyenne",
+    )
+    .tab_spanner(label="Fonds propres", columns=fpc_cols)
+    .tab_spanner(label="Total bilan", columns=bilan_cols)
+    .fmt_number(columns=["mfpc", "mbilan"], decimals=2)
+)
+
+gt_tab
+
+```
+
+:::
+::::
+
+
+Dans le code ci-dessus, nous utilisons le package **gtsummary** qui va produire les résumés statistiques et les afficher. 
+
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: gtsummaryR
+
+library(gtsummary)
+capital|>left_join(banque)|>filter(mois==12 )|>tbl_summary(
+  by=annee,
+  include=c(pays,fpc,bilan),
+  statistic =list(
+    all_continuous() ~ "Total {sum} - Moyenne {mean}",
+    all_categorical()~ "{n}/{N}({p}%)"
+  ),
+  digits = all_continuous()~2,
+  label=list(annee="Année",pays="Pays",fpc="Fonds propres",bilan="Total bilan")
+)
+
+```
+
+
+:::
+
+::::
+
+
+### Les modèles économétriques
+
+Ils occupent une place de choix dans l'analyse et produisent de nombreux resultats qui dependent de la complexité du modèle retenu. Commençons par une regréssion linéaire simple. Nous utilisons le package **sjPlot** pour l'affichage mais **stargazer** est une très bonne alternative. Ci-après sont illustrés un cas simple (la regréssion linéaire simple) et un cas complexe (modèle à effets aléatoires)
+
+::::{.columns}
+
+:::{.column width="100%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: reg1
+library(sjPlot)
+library(glmmTMB)
+
+reg1<-lm(fpc~bilan, data=capital|>left_join(banque)|>filter(annee==2018, mois==12 ))
+reg2<-glmmTMB(fpc~bilan+(1+bilan|id_banque), data=capital|>left_join(banque)|>filter(mois==12 ))
+tab_model(reg1,reg2,title="Regréssions",digits=3,dv.labels=c("Simple","Complexe"))
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="0.86em" style="vertical-align: middle;"}
+
+```{python}
+#| echo: true
+#| label: EmptyPython
+
+```
+
+:::
+::::
+
 
 
 ::::{.columns}
@@ -722,7 +872,218 @@ rdc|>left_join(agences)|>mutate(long=st_coordinates(centres)[,1],
 :::
 ::::
 
+## À la découverte de ![](../shiny-solo.png){height="0.86em" style="vertical-align: middle;"}
 
+
+
+Shiny est un package R qui facilite la création d'applications web interactives directement depuis R, et aucune compétence en développement web requise. Le package a été porté sur Python par ses autheurs. Shiny s'utilise de façon complémentaire avec un autre package, **bslib**, qui permet de créer des interfaces utilisateur esthétiques.
+
+### Structure d'une application shiny
+
+Une application shiny comprend deux objets 
+
+ - L'objet d'interface utilisateur (UI) qui contrôle la disposition et l'apparence de votre application ;
+ - La fonction serveur contient les instructions dont votre ordinateur a besoin pour construire votre application.
+
+Une application shiny peut être avec un seul fichier ou plusieurs fichiers
+
+
+
+::::{.columns}
+
+:::{.column width="50%"}
+### ![](../shiny-solo.png){height="0.8em" style="vertical-align: middle;"} un fichier app.R
+
+```{r}
+#| echo: true
+#| eval: false
+#| label: shiny1
+
+library(shiny)
+library(bslib)
+
+# Définition de l'UI ----
+ui <- page_sidebar(
+ 
+)
+
+# Fonction serveur  ----
+server <- function(input, output) {
+
+}
+
+# Execution de l'application ----
+shinyApp(ui = ui, server = server)
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../shiny-solo.png){height="0.86em" style="vertical-align: middle;"} plusieurs fichiers
+
+```text
+appshiny/
+├── ui.R
+├── server.R
+├── global.R
+└── www/
+```
+
+```{r}
+#| echo: true
+#| eval: false
+#| label: shiny2
+
+# Pour executer
+
+runApp("chemin_vers_appshiny")
+
+```
+
+:::
+::::
+
+Dans le cas avec plusieurs fichiers, il y'a le dossier **www** qui apparait. Ce répertoire réservé aux ressources statiques accessibles par le navigateur : CSS, JavaScript, images, polices, etc. Ces ressources sont servies par Shiny lorsqu'elles sont demandées, par le navigateur. Ce dossier va jouer le même rôle, même avec une applications basée un seul fichier. 
+
+```{r}
+#| echo: false
+#| label: tabdescshiny
+
+# Pour executer
+
+tibble(
+  fichier=c("ui.R","server.R","global.R"),
+  role=c("Définit l'interface utilisateur.","Définit la logique serveur et les traitements de l'application","Définit les objets, fonctions et paramètres partagés."),
+  chargement=c("Lors de l'initialisation de l'application.","Lors de l'initialisation, puis son code serveur est exécuté pour chaque session.","Une fois au démarrage du processus R, avant server.R et ui.R.")
+)|>kable(format= "html",col.names=c("Fichier","Rôle","Chargement"))
+
+```
+
+
+Un fichier **global.R** peut aussi être utiliser avec un seul fichier app.R. Shiny a le concept de module qui permet d'imbriquer plusieurs blocs ui+server en une seule application. Le code peut aussi être scindé en plusieurs fichiers R et gérer des multiples ressources. Imaginons une application shiny pour les stress test.
+
+
+```text
+stresstester/
+├── ui.R
+├── server.R
+├── global.R
+├── R/
+│   ├── fonctions.R
+│   ├── database.R
+│   └── calculs.R
+├── modules/
+│   ├── mod_liquidite.R
+│   └── mod_solvabilite.R
+├── www/
+│    ├── styles.css
+│    ├── logo.png
+│    ├── qmds/
+│    │    ├── liquite.qmd
+│    │    └── solvabilite.qmd
+│    └── lang/
+│        ├── english.csv
+│        └── spanish.csv
+└── Data/
+```
+
+
+
+
+::::{.columns}
+
+:::{.column width="50%"}
+### ![](../Rlogo.png){height="0.8em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: EmptyR
+
+```
+
+:::
+
+:::{.column width="50%"}
+### ![](../python-logo-master-v3-TM.png){height="0.86em" style="vertical-align: middle;"}
+
+```{r}
+#| echo: true
+#| label: EmptyPython
+
+
+```
+
+:::
+::::
+
+### Créer une interface utilisateur
+
+La code ci-après montre comment mettre en place une interface 
+
+
+::::{.columns}
+
+:::{.column width="100%"}
+### Code ![](../shiny-solo.png){height="0.8em" style="vertical-align: middle;"} 
+
+```{r}
+#| echo: true
+#| eval: false
+#| label: shinylive1ne
+
+library(shiny)
+library(bslib)
+
+# Définition de l'UI ----
+ui <- page_sidebar(
+  title = "Zone de titre de l'application",
+  sidebar = sidebar("Panneau latéral"),
+  "Zone de contenu principale"
+)
+
+# Fonction serveur  ----
+server <- function(input, output) {
+}
+
+# Execution de l'application ----
+shinyApp(ui = ui, server = server)
+
+```
+
+:::
+
+:::{.column width="100%"}
+### Rendu ![](../shiny-solo.png){height="0.86em" style="vertical-align: middle;"} 
+
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 500
+#| echo: false
+#| label: shinylive1
+
+library(shiny)
+library(bslib)
+
+# Définition de l'UI ----
+ui <- page_sidebar(
+   title = "Zone de titre de l'application",
+   sidebar = sidebar("Panneau latéral"),
+  "Zone de contenu principale"
+)
+
+# Fonction serveur  ----
+server <- function(input, output) {
+
+}
+
+# Execution de l'application ----
+shinyApp(ui = ui, server = server)
+
+```
+
+:::
+::::
 
 
 ## Références du chapitre
